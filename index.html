@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>FSP</title>
 
-        <!-- Google Fonts - Orbitron + Inter -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Orbitron + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
         /* Estilos gerais */
@@ -28,12 +28,13 @@
             width: 100%;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             position: relative;
             perspective: 1000px;
             padding: 20px;
             box-sizing: border-box;
+            gap: 30px;
         }
 
         /* Canvas do Matrix */
@@ -49,15 +50,18 @@
 
         /* Quadro semi-transparente */
         .quadro {
-            background: rgba(0, 0, 0, 0.5); /* Fundo preto com 60% de opacidade */
+            background: rgba(0, 0, 0, 0.5);
             padding: 30px;
-            border-radius: 20px; /* Bordas arredondadas */
-            box-shadow: 0px 10px 30px rgba(241, 238, 238, 0.5); /* Sombra para destaque */
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(241, 238, 238, 0.5);
+            width: 100%;
+            max-width: 900px;
         }
 
         /* Container geral */
         .content-container {
             text-align: left;
+            width: 100%;
         }
 
         /* Título com Sombra 3D Estática */
@@ -65,7 +69,7 @@
             font-family: "Orbitron", sans-serif;
             font-weight: 900;
             font-size: 28px;
-            color: #fff9f9; /* Texto branco para melhor contraste */
+            color: #fff9f9;
             text-shadow:
             2px 2px 5px #000,
             4px 4px 5px #000,
@@ -81,6 +85,7 @@
             display: flex;
             gap: 50px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         /* Estilo do link (contêiner) */
@@ -106,7 +111,7 @@
         /* Efeito de rotação 3D e sombra ao passar o mouse */
         .image-link:hover {
             transform: rotateY(20deg) rotateX(10deg) scale(1.1);
-            box-shadow: 0px 20px 40px rgba(255, 255, 255, 0.3); /* Sombra branca para contraste */
+            box-shadow: 0px 20px 40px rgba(255, 255, 255, 0.3);
         }
 
         /* Adiciona uma sombra atrás da imagem */
@@ -136,7 +141,7 @@
         .copyright {
             margin-top: 50px;
             text-align: center;
-            color: rgb(255, 255, 255); /* Texto branco para melhor contraste */
+            color: rgb(255, 255, 255);
             font-family: "Orbitron", sans-serif;
             text-shadow:
                 2px 2px 0 #000,
@@ -151,19 +156,18 @@
         }
 
         .copyright a {
-            color: #cacaca; /* Azul claro para links */
+            color: #cacaca;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .copyright a:hover {
-            color: #da0000; /* Verde ao passar o mouse */
+            color: #da0000;
         }
 
         /* Responsividade para mobile */
         @media (max-width: 768px) {
             .image-container {
-                flex-wrap: wrap;
                 gap: 30px;
             }
             
@@ -173,12 +177,16 @@
             }
             
             .title-container h1 {
-                font-size: 32px;
+                font-size: 24px;
             }
             
             .quadro {
                 padding: 20px;
                 margin: 10px;
+            }
+
+            .page-wrapper {
+                gap: 20px;
             }
         }
 
@@ -186,100 +194,136 @@
 </head>
 
 <body>
-        <!-- Canvas para animação Matrix -->
-        <canvas id="matrix-canvas"></canvas>
+    <!-- Canvas para animação Matrix -->
+    <canvas id="matrix-canvas"></canvas>
 
-        <div class="page-wrapper">
-            <div class="content-container">
-
-        <!-- Quadro semi-transparente -->
+    <div class="page-wrapper">
+        <!-- QUADRO 1: Publicações -->
         <div class="quadro">
-            <!-- Título acima das imagens -->
             <div class="title-container">
                 <h1>Publicações</h1>
             </div>
-
-            <!-- Container das imagens -->
             <div class="image-container">
-                <!-- Link 1 -->
                 <a href="https://cactosrs.netlify.app/" target="_blank" class="image-link">
                     <img src="img1.png" alt="Cactos RS">
                 </a>
-
-                <!-- Link 2 -->
                 <a href="https://guia-de-cultivo-de-cactos.netlify.app/" target="_blank" class="image-link">
                     <img src="img2.png" alt="Guia de Cultivo de Cactos">
                 </a>
-
-                <!-- Link 3 -->
                 <a href="https://guiaflorapromata.netlify.app/" target="_blank" class="image-link">
-                    <img src="img3.png" alt="Guia de Cultivo de Cactos">
+                    <img src="img3.png" alt="Guia Flora Pro Mata">
                 </a>
-
-                <!-- Link 4 -->
                 <a href="https://pdfreed.netlify.app/" target="_blank" class="image-link">
-                    <img src="img4.png" alt="Guia de Cultivo de Cactos">
+                    <img src="img4.png" alt="PDF Reed">
                 </a>
-            </div>
-
-            <!-- Copyright -->
-            <div class="copyright">
-                <p>© 2026 Desenvolvido por <a href="https://www.instagram.com/petryfrederico/" target="_blank">FSP</a>.</p>
             </div>
         </div>
+
+        <!-- QUADRO 2: Projetos -->
+        <div class="quadro">
+            <div class="title-container">
+                <h1>Projetos</h1>
+            </div>
+            <div class="image-container">
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img1.png" alt="Projeto 1">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img2.png" alt="Projeto 2">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img3.png" alt="Projeto 3">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img4.png" alt="Projeto 4">
+                </a>
+            </div>
+        </div>
+
+        <!-- QUADRO 3: Portfólio -->
+        <div class="quadro">
+            <div class="title-container">
+                <h1>Portfólio</h1>
+            </div>
+            <div class="image-container">
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img1.png" alt="Portfolio 1">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img2.png" alt="Portfolio 2">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img3.png" alt="Portfolio 3">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img4.png" alt="Portfolio 4">
+                </a>
+            </div>
+        </div>
+
+        <!-- QUADRO 4: Contato -->
+        <div class="quadro">
+            <div class="title-container">
+                <h1>Contato</h1>
+            </div>
+            <div class="image-container">
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img1.png" alt="Contato 1">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img2.png" alt="Contato 2">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img3.png" alt="Contato 3">
+                </a>
+                <a href="#" target="_blank" class="image-link">
+                    <img src="img4.png" alt="Contato 4">
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="copyright">
+            <p>© 2026 Desenvolvido por <a href="https://www.instagram.com/petryfrederico/" target="_blank">FSP</a>.</p>
+        </div>
     </div>
-    </div> <!-- Fecha page-wrapper -->
+
     <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
-        // Ajustar tamanho do canvas
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Caracteres para o efeito Matrix
         const chars = 'frederico schaffer petry';
         const fontSize = 11.5;
         const columns = canvas.width / fontSize;
 
-        // Array de gotas (uma por coluna)
         const drops = [];
         for (let i = 0; i < columns; i++) {
             drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
         }
 
-        // Função de desenho
         function draw() {
-            // Fundo semi-transparente para efeito de fade
             ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Texto verde estilo Matrix
-            ctx.fillStyle = '#FF0000'; // Verde Matrix
+            ctx.fillStyle = '#FF0000';
             ctx.font = fontSize + 'px monospace';
 
-            // Loop através das gotas
             for (let i = 0; i < drops.length; i++) {
-                // Caractere aleatório
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                
-                // Desenhar caractere
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-                // Resetar gota ao final da tela
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
-
-                // Incrementar Y da gota
                 drops[i]++;
             }
         }
 
-        // Executar animação
         setInterval(draw, 33);
 
-        // Redimensionar canvas ao mudar tamanho da janela
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -288,11 +332,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
