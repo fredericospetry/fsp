@@ -1,4 +1,9 @@
 /* =====================
+        GOOGLE FONTS
+===================== */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* =====================
         GLOBAL
 ===================== */
 * {
@@ -8,8 +13,14 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0d0d0d;
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+        url('fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     color: #fff;
     overflow-x: hidden;
 }
@@ -27,15 +38,6 @@ body {
     transition: all 0.4s ease;
     position: relative;
     z-index: 1;
-    background: 
-        /* Overlay escuro para legibilidade */
-        linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
-        /* Imagem de fundo */
-        url('fundo.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
 }
 
 /* =====================
@@ -47,10 +49,9 @@ body {
     top: 0;
     width: 80px;
     height: 100vh;
-    background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    background: transparent;
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
     pointer-events: auto;
 }
 
@@ -72,7 +73,6 @@ body {
     gap: 22px;
     padding: 30px 0;
     text-align: center;
-    border-bottom: 1px solid rgba(139, 0, 0, 0.3);
 }
 
 .profile-img {
@@ -91,6 +91,7 @@ body {
 
 .profile-name {
     opacity: 0;
+    font-family: 'Orbitron', sans-serif;
     font-size: 18px;
     font-weight: 600;
     color: #8b6100;
@@ -145,7 +146,7 @@ body {
     top: 0;
     width: 4px;
     height: 100%;
-    background: #8B0000;
+    background: #B8860B;
     transform: scaleY(0);
     transition: transform 0.3s ease;
 }
@@ -156,15 +157,15 @@ body {
 }
 
 .menu-item:hover {
-    background: rgba(139, 0, 0, 0.1);
+    background: rgba(184, 134, 11, 0.1);
     color: #fff;
     padding-left: 30px;
 }
 
 .menu-item.active {
-    background: rgba(139, 0, 0, 0.2);
+    background: rgba(184, 134, 11, 0.2);
     color: #fff;
-    box-shadow: inset 0 0 20px rgba(139, 0, 0, 0.3);
+    box-shadow: inset 0 0 20px rgba(184, 134, 11, 0.3);
 }
 
 .menu-icon {
@@ -198,7 +199,8 @@ body {
 }
 
 .hero-subtitle {
-    color: #8B0000;
+    color: #B8860B;
+    font-family: 'Orbitron', sans-serif;
     font-size: 28px;
     font-weight: 500;
     margin-bottom: 20px;
@@ -206,6 +208,7 @@ body {
 }
 
 .hero-title {
+    font-family: 'Orbitron', sans-serif;
     font-size: 56px;
     font-weight: 700;
     line-height: 1.2;
@@ -220,8 +223,8 @@ body {
     display: inline-block;
     padding: 15px 40px;
     background: transparent;
-    border: 2px solid #8B0000;
-    color: #8B0000;
+    border: 2px solid #B8860B;
+    color: #B8860B;
     text-decoration: none;
     border-radius: 30px;
     font-weight: 600;
@@ -231,10 +234,10 @@ body {
 }
 
 .hero-btn:hover {
-    background: #8B0000;
+    background: #B8860B;
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(139, 0, 0, 0.4);
+    box-shadow: 0 10px 30px rgba(184, 134, 11, 0.4);
 }
 
 /* =====================
@@ -268,9 +271,10 @@ body {
 }
 
 .section-title {
+    font-family: 'Orbitron', sans-serif;
     font-size: 42px;
     margin-bottom: 30px;
-    color: #8B0000;
+    color: #B8860B;
 }
 
 .section-text {
@@ -310,12 +314,28 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    opacity: 0.35;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+#matrix-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.15;
     pointer-events: none;
 }
 
 /* Garantir que o conteúdo fique acima do canvas */
 .sidebar > *:not(canvas) {
+    position: relative;
+    z-index: 2;
+}
+
+.main-content > *:not(canvas) {
     position: relative;
     z-index: 2;
 }
@@ -392,9 +412,9 @@ body {
         top: 15px;
         left: 15px;
         z-index: 1001;
-        background: rgba(139, 0, 0, 0.3);
-        border: 2px solid #8B0000;
-        color: #8B0000;
+        background: rgba(184, 134, 11, 0.3);
+        border: 2px solid #B8860B;
+        color: #B8860B;
         font-size: 24px;
         width: 45px;
         height: 45px;
