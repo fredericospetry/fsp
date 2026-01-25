@@ -122,6 +122,42 @@ body {
 }
 
 /* =====================
+        SIDEBAR FOOTER
+===================== */
+.sidebar-footer {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+.tech-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar:hover .tech-icons {
+    opacity: 1;
+}
+
+.tech-icons img {
+    width: 28px;
+    height: 28px;
+    opacity: 0.85;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.tech-icons img:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* =====================
         MENU
 ===================== */
 .menu {
@@ -436,7 +472,8 @@ body {
     .sidebar:hover .menu-text,
     .sidebar:hover .profile-name,
     .sidebar:hover .profile-icons img,
-    .sidebar:hover .profile-img {
+    .sidebar:hover .profile-img,
+    .sidebar:hover .tech-icons {
         all: unset;
     }
 
@@ -448,18 +485,19 @@ body {
         font-size: 16px;
     }
 
-    /* Mostrar ícones SVG quando menu mobile está aberto */
-    .sidebar.mobile-open .profile-name {
+    /* Mostrar ícones SVG do footer quando menu mobile está aberto */
+    .sidebar.mobile-open .tech-icons {
         opacity: 1 !important;
         display: flex !important;
+        flex-wrap: wrap;
         justify-content: center;
         gap: 8px;
     }
 
-    .sidebar.mobile-open .profile-icons img {
+    .sidebar.mobile-open .tech-icons img {
         width: 28px !important;
         height: 28px !important;
-        opacity: 1 !important;
+        opacity: 0.85 !important;
         transform: none !important;
     }
 
