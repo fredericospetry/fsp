@@ -469,10 +469,9 @@ body {
     }
 
     .mobile-menu-btn {
-        position: absolute;
+        position: fixed;
         left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 15px;
         background: transparent;
         border: 2px solid #B8860B;
         color: #B8860B;
@@ -495,11 +494,12 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 12px 0;
+        padding: 15px 0;
+        height: 80px;
     }
 
     .mobile-logo img {
-        height: 45px;
+        height: 55px;
         width: auto;
     }
 
@@ -557,9 +557,9 @@ body {
     /* Ajustar conteúdo principal */
     .main-content {
         margin-left: 0;
-        margin-top: 70px;
+        margin-top: 80px;
         padding: 20px;
-        min-height: calc(100vh - 70px);
+        min-height: calc(100vh - 80px);
     }
 
     .content-section {
