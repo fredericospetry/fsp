@@ -434,6 +434,7 @@ body {
 
     /* Desativar efeitos de hover no mobile */
     .sidebar:hover .menu-text,
+    .sidebar:hover .profile-name,
     .sidebar:hover .profile-icons img,
     .sidebar:hover .profile-img {
         all: unset;
@@ -448,6 +449,13 @@ body {
     }
 
     /* Mostrar ícones SVG quando menu mobile está aberto */
+    .sidebar.mobile-open .profile-name {
+        opacity: 1 !important;
+        display: flex !important;
+        justify-content: center;
+        gap: 8px;
+    }
+
     .sidebar.mobile-open .profile-icons img {
         width: 28px !important;
         height: 28px !important;
