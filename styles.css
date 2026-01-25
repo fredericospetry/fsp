@@ -28,40 +28,14 @@ body {
     position: relative;
     z-index: 1;
     background: 
-        /* Textura de escamas */
-        repeating-radial-gradient(
-            circle at 0 0,
-            transparent 0,
-            transparent 8px,
-            rgba(139, 0, 0, 0.08) 8px,
-            rgba(139, 0, 0, 0.08) 9px
-        ),
-        repeating-radial-gradient(
-            circle at 15px 15px,
-            transparent 0,
-            transparent 8px,
-            rgba(139, 0, 0, 0.06) 8px,
-            rgba(139, 0, 0, 0.06) 9px
-        ),
-        /* Degradê de fundo */
-        radial-gradient(ellipse at 20% 80%, rgba(139, 0, 0, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(50, 20, 20, 0.6) 0%, transparent 70%),
-        linear-gradient(135deg, #1f1010 0%, #0d0d0d 50%, #1a0a0a 100%);
-    background-size: 30px 30px, 30px 30px, 200% 200%, 200% 200%, 200% 200%, 200% 200%;
-    animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0 0, 15px 15px, 0% 50%, 0% 50%, 0% 50%, 0% 50%;
-    }
-    50% {
-        background-position: 0 0, 15px 15px, 100% 50%, 100% 50%, 100% 50%, 100% 50%;
-    }
-    100% {
-        background-position: 0 0, 15px 15px, 0% 50%, 0% 50%, 0% 50%, 0% 50%;
-    }
+        /* Overlay escuro para legibilidade */
+        linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+        /* Imagem de fundo */
+        url('fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 /* =====================
@@ -216,41 +190,8 @@ body {
 }
 
 /* =====================
-        FUNDO DEGRADÊ COM ESCAMAS (MAIN CONTENT)
+        FUNDO DEGRADÊ COM ESCAMAS - HERO
 ===================== */
-.main-content {
-    margin-left: 80px;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 40px 40px 100px;
-    transition: all 0.4s ease;
-    position: relative;
-    z-index: 1;
-    background: 
-        repeating-radial-gradient(
-            circle at 0 0,
-            transparent 0,
-            transparent 8px,
-            rgba(139, 0, 0, 0.08) 8px,
-            rgba(139, 0, 0, 0.08) 9px
-        ),
-        repeating-radial-gradient(
-            circle at 15px 15px,
-            transparent 0,
-            transparent 8px,
-            rgba(139, 0, 0, 0.06) 8px,
-            rgba(139, 0, 0, 0.06) 9px
-        ),
-        radial-gradient(ellipse at 20% 80%, rgba(139, 0, 0, 0.25) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(50, 20, 20, 0.6) 0%, transparent 70%),
-        linear-gradient(135deg, #1f1010 0%, #0d0d0d 50%, #1a0a0a 100%);
-    background-size: 30px 30px, 30px 30px, 200% 200%, 200% 200%, 200% 200%, 200% 200%;
-    animation: gradientShift 15s ease infinite;
-}
-
 .hero {
     text-align: center;
     max-width: 800px;
@@ -294,18 +235,6 @@ body {
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(139, 0, 0, 0.4);
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0 0, 15px 15px, 0% 50%, 0% 50%, 0% 50%, 0% 50%;
-    }
-    50% {
-        background-position: 0 0, 15px 15px, 100% 50%, 100% 50%, 100% 50%, 100% 50%;
-    }
-    100% {
-        background-position: 0 0, 15px 15px, 0% 50%, 0% 50%, 0% 50%, 0% 50%;
-    }
 }
 
 /* =====================
@@ -488,44 +417,16 @@ body {
         width: 250px;
     }
 
-    /* Mostra textos quando sidebar abre */
-    .sidebar.mobile-open .profile-img {
-        width: 120px;
-        height: 120px;
-    }
-
-    .sidebar.mobile-open .profile-name {
-        opacity: 1;
-    }
-
-    .sidebar.mobile-open .menu-text {
-        opacity: 1;
-    }
-
-    /* Conteúdo ocupa tela toda */
     .main-content {
         margin-left: 0;
         padding: 20px;
         background: 
-            repeating-radial-gradient(
-                circle at 0 0,
-                transparent 0,
-                transparent 8px,
-                rgba(139, 0, 0, 0.08) 8px,
-                rgba(139, 0, 0, 0.08) 9px
-            ),
-            repeating-radial-gradient(
-                circle at 15px 15px,
-                transparent 0,
-                transparent 8px,
-                rgba(139, 0, 0, 0.06) 8px,
-                rgba(139, 0, 0, 0.06) 9px
-            ),
-            radial-gradient(ellipse at 30% 70%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
-            radial-gradient(ellipse at 70% 30%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
-            linear-gradient(180deg, #1f1010 0%, #0d0d0d 100%);
-        background-size: 30px 30px, 30px 30px, 200% 200%, 200% 200%, 200% 200%;
-        animation: gradientShift 15s ease infinite;
+            linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.6) 100%),
+            url('fundo.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: scroll;
+        background-repeat: no-repeat;
     }
 
     .sidebar:hover ~ .main-content {
