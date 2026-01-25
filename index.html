@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSP ADS - Gestão de TI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Botão Menu Mobile -->
+    <button class="btn-menu-mobile">☰</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Canvas Matrix -->
+        <canvas id="matrix-sidebar"></canvas>
+        
+        <div class="profile">
+            <img src="logo.png" alt="Perfil" class="profile-img">
+            <div class="profile-name profile-icons">
+            <img src="css3.svg" alt="CSS">
+            <img src="html5.svg" alt="HTML">
+            <img src="javascript.svg" alt="JS">
+            <img src="typescript.svg" alt="TYPESCRIPT">
+            <img src="php.svg" alt="PHP">
+            <img src="python.svg" alt="PYTHON">
+    </div>
+        </div>
+
+        <nav class="menu">
+            <a href="#inicio" class="menu-item active" data-section="inicio">
+                <span class="menu-icon">🏠</span>
+                <span class="menu-text">Início</span>
+            </a>
+            <a href="#sobre" class="menu-item" data-section="sobre">
+                <span class="menu-icon">👤</span>
+                <span class="menu-text">Sobre mim</span>
+            </a>
+            <a href="#portfolio" class="menu-item" data-section="portfolio">
+                <span class="menu-icon">💼</span>
+                <span class="menu-text">Portfólio</span>
+            </a>
+            <a href="#servicos" class="menu-item" data-section="servicos">
+                <span class="menu-icon">⚙️</span>
+                <span class="menu-text">Serviços</span>
+            </a>
+            <a href="#contato" class="menu-item" data-section="contato">
+                <span class="menu-icon">📧</span>
+                <span class="menu-text">Contato</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        
+        <!-- Seção Início -->
+        <div id="inicio" class="content-section active">
+            <div class="hero">
+                <div class="hero-subtitle">Bem-vindo</div>
+                <p class="section-text">
+                Desenvolvimento de sites e sistemas web sob medida, 
+                utilizando boas práticas, tecnologias atuais e 
+                soluções adaptadas às necessidades de cada projeto.
+            </p>
+            </div>
+        </div>
+
+        <!-- Seção Sobre -->
+        <div id="sobre" class="content-section">
+            <h2 class="section-title">Sobre mim</h2>
+            <p class="section-text">
+                Desenvolvo sites e sistemas web utilizando boas práticas de desenvolvimento,
+                com ênfase em performance, usabilidade e estrutura de código. Os projetos são 
+                planejados de forma objetiva, visando soluções eficientes, escaláveis e alinhadas 
+                às necessidades de cada aplicação.
+            </p>
+        </div>
+
+        <!-- Seção Portfólio -->
+        <div id="portfolio" class="content-section">
+            <h2 class="section-title">Portfólio</h2>
+            <p class="section-text">
+                Veja uma seleção dos meus melhores projetos, 
+                demonstrando minhas habilidades em design, desenvolvimento e solução de problemas.
+            </p>
+                            <!-- Container das imagens -->
+            <div class="image-container">
+                <!-- Link 1 -->
+                <a href="https://cactosrs.netlify.app/" target="_blank" class="image-link">
+                    <img src="img1.png" alt="Cactos RS">
+                </a>
+                <!-- Link 2 -->
+                <a href="https://guia-de-cultivo-de-cactos.netlify.app/" target="_blank" class="image-link">
+                    <img src="img2.png" alt="Guia de Cultivo de Cactos">
+                </a>
+                <!-- Link 3 -->
+                <a href="https://guiaflorapromata.netlify.app/" target="_blank" class="image-link">
+                    <img src="img3.png" alt="Guia de Cultivo de Cactos">
+                </a>
+                <!-- Link 4 -->
+                <a href="https://pdfreed.netlify.app/" target="_blank" class="image-link">
+                    <img src="img4.png" alt="Guia de Cultivo de Cactos">
+                </a>
+            </div>
+        </div>
+
+        <!-- Seção Serviços -->
+        <div id="servicos" class="content-section">
+            <h2 class="section-title">Serviços</h2>
+            <p class="section-text">
+            Soluções web para empresas, setor público e organizações do terceiro
+            setor, atendendo prefeituras, órgãos públicos e ONGs que necessitam 
+            de sistemas, portais ou canais digitais para comunicação e atendimento.
+            </p>
+        </div>
+
+        <!-- Seção Contato -->
+        <div id="contato" class="content-section">
+            <h2 class="section-title">Contato</h2>
+
+            <div class="contact-icons">
+                <a href="https://wa.me/555198605153" target="_blank" aria-label="WhatsApp">
+                    <img src="whatsapp.png" alt="WhatsApp">
+                </a>
+
+                <a href="https://instagram.com/petryfrederico" target="_blank" aria-label="Instagram">
+                    <img src="instagram.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
