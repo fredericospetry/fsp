@@ -8,8 +8,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <!-- Botão Menu Mobile -->
-    <button class="btn-menu-mobile">☰</button>
+    <!-- Header Mobile -->
+    <header class="mobile-header">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">
+            <img src="logo.png" alt="FSP Logo">
+        </div>
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="#inicio" class="mobile-nav-item active" data-section="inicio">
+                <i class="fas fa-terminal"></i> Início
+            </a>
+            <a href="#sobre" class="mobile-nav-item" data-section="sobre">
+                <i class="fas fa-user-astronaut"></i> Sobre mim
+            </a>
+            <a href="#portfolio" class="mobile-nav-item" data-section="portfolio">
+                <i class="fas fa-code"></i> Portfólio
+            </a>
+            <a href="#servicos" class="mobile-nav-item" data-section="servicos">
+                <i class="fas fa-microchip"></i> Serviços
+            </a>
+            <a href="#contato" class="mobile-nav-item" data-section="contato">
+                <i class="fas fa-satellite-dish"></i> Contato
+            </a>
+        </nav>
+    </header>
 
     <!-- Sidebar -->
     <div class="sidebar">

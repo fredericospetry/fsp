@@ -1,44 +1,67 @@
 // Navegação entre seções
 const menuItems = document.querySelectorAll('.menu-item');
+const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
 const sections = document.querySelectorAll('.content-section');
 
-menuItems.forEach(item => {
-    item.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Remove active de todos os itens
-        menuItems.forEach(i => i.classList.remove('active'));
-        
-        // Adiciona active ao item clicado
-        this.classList.add('active');
-        
-        // Esconde todas as seções
-        sections.forEach(s => s.classList.remove('active'));
-        
-        // Mostra a seção correspondente
-        const sectionId = this.getAttribute('data-section');
-        document.getElementById(sectionId).classList.add('active');
-    });
-});
-
-// Toggle menu em mobile
-const sidebar = document.querySelector('.sidebar');
-const btnMenuMobile = document.querySelector('.btn-menu-mobile');
-
-if (btnMenuMobile) {
-    btnMenuMobile.addEventListener('click', function() {
-        sidebar.classList.toggle('mobile-open');
+// Função para trocar seção
+function switchSection(sectionId, clickedItem, allItems) {
+    // Remove active de todos os itens
+    allItems.forEach(i => i.classList.remove('active'));
+    
+    // Adiciona active ao item clicado
+    clickedItem.classList.add('active');
+    
+    // Esconde todas as seções
+    sections.forEach(s => s.classList.remove('active'));
+    
+    // Mostra a seção correspondente
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Sincroniza os dois menus
+    const allMenuItems = [...document.querySelectorAll('.menu-item'), ...document.querySelectorAll('.mobile-nav-item')];
+    allMenuItems.forEach(item => {
+        if (item.getAttribute('data-section') === sectionId) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
     });
 }
 
-// Fecha menu ao clicar em um link (mobile)
+// Desktop menu
 menuItems.forEach(item => {
-    item.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-            sidebar.classList.remove('mobile-open');
-        }
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const sectionId = this.getAttribute('data-section');
+        switchSection(sectionId, this, menuItems);
     });
 });
+
+// Mobile menu
+mobileNavItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const sectionId = this.getAttribute('data-section');
+        switchSection(sectionId, this, mobileNavItems);
+        
+        // Fecha o dropdown após clicar
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        if (mobileNav) mobileNav.classList.remove('open');
+        if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
+    });
+});
+
+// Toggle dropdown mobile
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileNav = document.getElementById('mobileNav');
+
+if (mobileMenuBtn && mobileNav) {
+    mobileMenuBtn.addEventListener('click', function() {
+        mobileNav.classList.toggle('open');
+        this.classList.toggle('active');
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
