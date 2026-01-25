@@ -432,20 +432,39 @@ body {
         transform: translateX(0);
     }
 
-    /* Mostrar texto e ícones quando menu mobile está aberto */
-    .sidebar.mobile-open .menu-text {
-        opacity: 1;
+    /* Desativar efeitos de hover no mobile */
+    .sidebar:hover .menu-text,
+    .sidebar:hover .profile-icons img,
+    .sidebar:hover .profile-img {
+        all: unset;
     }
 
+    /* Mostrar texto quando menu mobile está aberto */
+    .sidebar.mobile-open .menu-text {
+        opacity: 1 !important;
+        margin-left: 20px;
+        white-space: nowrap;
+        font-size: 16px;
+    }
+
+    /* Mostrar ícones SVG quando menu mobile está aberto */
     .sidebar.mobile-open .profile-icons img {
-        transform: scale(1.1);
-        opacity: 1;
+        width: 28px !important;
+        height: 28px !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Logo tamanho fixo no mobile */
+    .profile-img {
+        width: 100px !important;
+        height: 100px !important;
+        transition: none !important;
     }
 
     .sidebar.mobile-open .profile-img {
-        width: 150px;
-        height: 150px;
-        margin-bottom: 15px;
+        width: 100px !important;
+        height: 100px !important;
     }
 
     /* Impede expansão por hover */
