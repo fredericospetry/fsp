@@ -432,6 +432,22 @@ body {
         transform: translateX(0);
     }
 
+    /* Mostrar texto e ícones quando menu mobile está aberto */
+    .sidebar.mobile-open .menu-text {
+        opacity: 1;
+    }
+
+    .sidebar.mobile-open .profile-icons img {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    .sidebar.mobile-open .profile-img {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 15px;
+    }
+
     /* Impede expansão por hover */
     .sidebar:hover {
         width: 250px;
