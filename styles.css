@@ -21,27 +21,40 @@ body {
 body {
     font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #f5f5f5;
-    background:
-        linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%),
-        url('fundos/fundo_1.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: none;
+    position: relative;
+    z-index: 0;
+    --bg-gradient: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+    --bg-current: url('fundos/fundo_1.jpg');
+    --bg-next: none;
     min-height: 100dvh;
     padding: 40px;
     padding-top: 18px;
 }
 
+body::before,
 body::after {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.28);
-    opacity: 0;
+    background-image: var(--bg-gradient), var(--bg-current);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     pointer-events: none;
-    transition: opacity 0.45s ease;
-    z-index: 2000;
+}
+
+body::before {
+    opacity: 1;
+    z-index: -2;
+}
+
+body::after {
+    background-image: var(--bg-gradient), var(--bg-next);
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    z-index: -1;
 }
 
 body.bg-fade-transition::after {
@@ -772,13 +785,18 @@ body.bg-fade-transition::after {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
-        margin: 20px 0 20px 0;
-        padding: 10px 12px;
-        gap: 6px 10px;
+        margin: 14px 0;
+        padding: 8px 10px;
+        gap: 4px;
         border-radius: 14px;
         transition: none;
+    }
+
+    .bg-switch-label,
+    .bg-time-label {
+        display: none;
     }
 
     .bg-switch-btn {
