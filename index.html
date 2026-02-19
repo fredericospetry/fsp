@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSP ADS - Gestão de TI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header Mobile -->
+    <header class="mobile-header">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo">
+            <img src="logo.png" alt="FSP Logo">
+        </div>
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="#inicio" class="mobile-nav-item active" data-section="inicio">
+                <i class="fas fa-terminal"></i> Início
+            </a>
+            <a href="#sobre" class="mobile-nav-item" data-section="sobre">
+                <i class="fas fa-user-astronaut"></i> Sobre mim
+            </a>
+            <a href="#portfolio" class="mobile-nav-item" data-section="portfolio">
+                <i class="fas fa-code"></i> Portfólio
+            </a>
+            <a href="#servicos" class="mobile-nav-item" data-section="servicos">
+                <i class="fas fa-microchip"></i> Serviços
+            </a>
+            <a href="#contato" class="mobile-nav-item" data-section="contato">
+                <i class="fas fa-satellite-dish"></i> Contato
+            </a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="profile">
+            <img src="logo.png" alt="Perfil" class="profile-img">
+        </div>
+
+        <nav class="menu">
+            <a href="#inicio" class="menu-item active" data-section="inicio">
+                <span class="menu-icon"><i class="fas fa-terminal"></i></span>
+                <span class="menu-text">Início</span>
+            </a>
+            <a href="#sobre" class="menu-item" data-section="sobre">
+                <span class="menu-icon"><i class="fas fa-user-astronaut"></i></span>
+                <span class="menu-text">Sobre mim</span>
+            </a>
+            <a href="#portfolio" class="menu-item" data-section="portfolio">
+                <span class="menu-icon"><i class="fas fa-code"></i></span>
+                <span class="menu-text">Portfólio</span>
+            </a>
+            <a href="#servicos" class="menu-item" data-section="servicos">
+                <span class="menu-icon"><i class="fas fa-microchip"></i></span>
+                <span class="menu-text">Serviços</span>
+            </a>
+            <a href="#contato" class="menu-item" data-section="contato">
+                <span class="menu-icon"><i class="fas fa-satellite-dish"></i></span>
+                <span class="menu-text">Contato</span>
+            </a>
+        </nav>
+
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <div class="bg-switcher" aria-label="Alterar plano de fundo">
+            <button id="bgPrevBtn" class="bg-switch-btn" aria-label="Fundo anterior"><i
+                    class="fas fa-chevron-circle-left"></i></button>
+            <span class="bg-switch-label">Tema de Fundo</span>
+            <button id="bgNextBtn" class="bg-switch-btn" aria-label="Próximo fundo"><i
+                    class="fas fa-chevron-circle-right"></i></button>
+            <span class="bg-time-label">Tempo Exib.:</span>
+            <select id="bgIntervalSelect" class="bg-interval-select"
+                aria-label="Tempo de transição automática do fundo">
+                <option value="10000">10s</option>
+                <option value="15000">15s</option>
+                <option value="20000" selected>20s</option>
+                <option value="30000">30s</option>
+            </select>
+            <button id="bgStopAutoBtn" class="bg-switch-btn bg-stop-btn" aria-pressed="false"
+                aria-label="Pausar transição automática de fundo"><i class="fas fa-pause"></i></button>
+        </div>
+
+        <!-- Seção Início -->
+        <div id="inicio" class="content-section active">
+            <h2 class="section-title">Bem-vindo</h2>
+            <p class="section-text">
+                Desenvolvimento de sites e sistemas web sob medida,
+                utilizando boas práticas, tecnologias atuais e
+                soluções adaptadas às necessidades de cada projeto.
+            </p>
+        </div>
+
+        <!-- Seção Sobre -->
+        <div id="sobre" class="content-section">
+            <h2 class="section-title">Sobre mim</h2>
+            <p class="section-text">
+                Desenvolvo sites e sistemas web utilizando boas práticas de desenvolvimento,
+                com ênfase em performance, usabilidade e estrutura de código. Os projetos são
+                planejados de forma objetiva, visando soluções eficientes, escaláveis e alinhadas
+                às necessidades de cada aplicação.
+            </p>
+        </div>
+
+        <!-- Seção Portfólio -->
+        <div id="portfolio" class="content-section">
+            <h2 class="section-title">Portfólio</h2>
+            <p class="section-text">
+                Veja uma seleção dos meus melhores projetos,
+                demonstrando minhas habilidades em design, desenvolvimento e solução de problemas.
+            </p>
+            <!-- Container das imagens -->
+            <div class="image-container">
+                <a href="https://cactosrs.netlify.app/" target="_blank" class="image-link">
+                    <img src="img1.png" alt="Cactos RS">
+                </a>
+                <a href="https://guia-de-cultivo-de-cactos.netlify.app/" target="_blank" class="image-link">
+                    <img src="img2.png" alt="Guia de Cultivo de Cactos">
+                </a>
+                <a href="https://guiaflorapromata.netlify.app/" target="_blank" class="image-link">
+                    <img src="img3.png" alt="Guia de Cultivo de Cactos">
+                </a>
+                <a href="https://pdfreed.netlify.app/" target="_blank" class="image-link">
+                    <img src="img4.png" alt="Guia de Cultivo de Cactos">
+                </a>
+            </div>
+        </div>
+
+        <!-- Seção Serviços -->
+        <div id="servicos" class="content-section">
+            <h2 class="section-title">Serviços</h2>
+            <p class="section-text">
+                Soluções web para empresas, setor público e organizações do terceiro
+                setor, atendendo prefeituras, órgãos públicos e ONGs que necessitam
+                de sistemas, portais ou canais digitais para comunicação e atendimento.
+            </p>
+
+            <div class="services-tech-icons">
+                <img src="css3.svg" alt="CSS">
+                <img src="html5.svg" alt="HTML">
+                <img src="javascript.svg" alt="JS">
+                <img src="typescript.svg" alt="TYPESCRIPT">
+                <img src="php.svg" alt="PHP">
+                <img src="python.svg" alt="PYTHON">
+            </div>
+        </div>
+
+        <!-- Seção Contato -->
+        <div id="contato" class="content-section">
+            <h2 class="section-title">Contato</h2>
+
+            <div class="contact-icons">
+                <a href="https://wa.me/555198605153" target="_blank" aria-label="WhatsApp">
+                    <img src="whatsapp.png" alt="WhatsApp">
+                </a>
+
+                <a href="https://instagram.com/petryfrederico" target="_blank" aria-label="Instagram">
+                    <img src="instagram.png" alt="Instagram">
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
