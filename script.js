@@ -7,12 +7,12 @@ const bgNextBtn = document.getElementById('bgNextBtn');
 const bgStopAutoBtn = document.getElementById('bgStopAutoBtn');
 const bgIntervalSelect = document.getElementById('bgIntervalSelect');
 
-const bgGradient = 'linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%)';
 const bgExtensions = ['png', 'gif', 'jpg', 'jpeg'];
 const backgroundFolder = 'fundos/';
 const maxScanIndex = 300;
 const stopAfterMissingStreak = 20;
 const defaultBackgroundAutoSwitchDelay = 20000;
+const backgroundFadeDuration = 900;
 const backgroundSwitchIntervalStorageKey = 'fspBackgroundSwitchInterval';
 
 let availableBackgrounds = [];
@@ -75,11 +75,8 @@ async function discoverBackgrounds() {
 
 function applyBackground(fileName, withTransition = true) {
     const setBackground = () => {
-        document.body.style.backgroundImage = `${bgGradient}, url('${fileName}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center center';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.setProperty('--bg-current', `url('${fileName}')`);
+        document.body.style.setProperty('--bg-next', `url('${fileName}')`);
         localStorage.setItem('fspSelectedBackground', fileName);
     };
 
@@ -92,15 +89,14 @@ function applyBackground(fileName, withTransition = true) {
         clearTimeout(backgroundTransitionTimeout);
     }
 
+    document.body.style.setProperty('--bg-next', `url('${fileName}')`);
     document.body.classList.add('bg-fade-transition');
 
     backgroundTransitionTimeout = setTimeout(() => {
         setBackground();
-
-        requestAnimationFrame(() => {
-            document.body.classList.remove('bg-fade-transition');
-        });
-    }, 220);
+        document.body.classList.remove('bg-fade-transition');
+        backgroundTransitionTimeout = null;
+    }, backgroundFadeDuration);
 }
 
 function toggleBackgroundButtonsState() {
