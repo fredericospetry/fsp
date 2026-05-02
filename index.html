@@ -11,235 +11,496 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<style>
+/* ═══════════════════════════════════════
+   FSP.DEV — Isometric Grid Theme
+   ═══════════════════════════════════════ */
+:root {
+  --bg: #060a14;
+  --bg-card: rgba(100,180,255,0.04);
+  --bg-card-hover: rgba(100,180,255,0.08);
+  --accent: #64b4ff;
+  --accent-dim: rgba(100,180,255,0.3);
+  --accent-faint: rgba(100,180,255,0.08);
+  --border: rgba(100,180,255,0.1);
+  --border-dim: rgba(255,255,255,0.05);
+  --text: #ffffff;
+  --text-dim: rgba(255,255,255,0.5);
+  --text-faint: rgba(255,255,255,0.25);
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'DM Mono', 'Fira Code', monospace;
+  --r: 10px;
+  --rl: 16px;
+  --ease: 0.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+
+/* Canvas */
+#iso-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+
+/* Layout */
+.container{max-width:1100px;margin:0 auto;padding:0 48px;position:relative;z-index:10}
+.section{position:relative;padding:120px 0;z-index:10}
+.section:nth-child(even){background:linear-gradient(to bottom,transparent,rgba(100,180,255,.025) 30%,rgba(100,180,255,.025) 70%,transparent)}
+
+/* Nav */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:100;transition:background var(--ease),backdrop-filter var(--ease)}
+#navbar.scrolled{background:rgba(6,10,20,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border-dim)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.nav-logo .logo-text{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--text);letter-spacing:.06em}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:6px 14px;font-size:13px;color:var(--text-faint);border-radius:6px;transition:color var(--ease),background var(--ease)}
+.nav-link:hover,.nav-link.active{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-cta{margin-left:8px;padding:7px 18px;font-size:13px;font-weight:500;color:var(--accent);border:1px solid var(--border);border-radius:8px;background:var(--accent-faint);transition:all var(--ease)}
+.nav-cta:hover{background:rgba(100,180,255,.15);border-color:rgba(100,180,255,.3)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--text-dim);border-radius:2px;transition:all .25s}
+
+/* Hero */
+.hero-section{min-height:100vh;display:flex;align-items:flex-end;padding-bottom:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(6,10,20,.98) 0%,rgba(6,10,20,.65) 40%,rgba(6,10,20,.08) 100%);z-index:1}
+.hero-content{padding-bottom:80px;position:relative;z-index:10;max-width:720px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px;padding:5px 14px;border:1px solid rgba(74,222,128,.2);border-radius:999px;background:rgba(74,222,128,.07)}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.badge-text{font-size:12px;color:rgba(74,222,128,.75);font-family:var(--mono);letter-spacing:.04em}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--accent-dim);letter-spacing:.18em;margin-bottom:20px}
+.hero-title{font-size:clamp(52px,7vw,80px);font-weight:700;letter-spacing:-.04em;line-height:1.0;color:var(--text);margin-bottom:28px}
+.hero-title-dim{color:rgba(100,180,255,.28);font-weight:300}
+.hero-desc{font-size:17px;color:var(--text-dim);line-height:1.75;max-width:500px;margin-bottom:40px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px}
+.hero-projects{display:flex;gap:10px;flex-wrap:wrap}
+.project-chip{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--accent-faint);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all var(--ease)}
+.project-chip:hover{background:rgba(100,180,255,.1);border-color:rgba(100,180,255,.25)}
+.chip-name{font-size:12px;font-weight:500;color:var(--text-dim)}
+.chip-lang{font-family:var(--mono);font-size:10px;color:var(--accent-dim)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;padding:11px 28px;font-size:13px;font-weight:600;border-radius:var(--r);cursor:pointer;border:none;transition:all var(--ease);font-family:var(--sans)}
+.btn-primary{background:rgba(100,180,255,.12);color:var(--accent);border:1px solid var(--border)}
+.btn-primary:hover{background:rgba(100,180,255,.2);border-color:rgba(100,180,255,.3)}
+.btn-ghost{background:transparent;color:var(--text-faint);border:1px solid var(--border-dim)}
+.btn-ghost:hover{color:var(--text-dim);border-color:rgba(255,255,255,.1)}
+
+/* Section headers */
+.section-label{font-family:var(--mono);font-size:10px;color:var(--accent-dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-size:clamp(32px,4vw,48px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:56px;color:var(--text)}
+.accent{color:var(--accent)}
+
+/* About */
+.about-grid{display:grid;grid-template-columns:1fr 280px;gap:64px;margin-bottom:72px}
+.about-text p{font-size:16px;color:var(--text-dim);line-height:1.8;margin-bottom:20px}
+.about-links{display:flex;gap:20px;margin-top:32px}
+.about-link{font-size:13px;color:var(--accent);font-family:var(--mono);border-bottom:1px solid rgba(100,180,255,.3);padding-bottom:2px;transition:border-color var(--ease)}
+.about-link:hover{border-color:var(--accent)}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 16px;display:flex;flex-direction:column;gap:6px}
+.stat-value{font-size:36px;font-weight:700;letter-spacing:-.04em;color:var(--accent);line-height:1}
+.stat-plus{font-size:24px}
+.stat-label{font-size:11px;color:var(--text-faint);line-height:1.4}
+.skills-section{border-top:1px solid var(--border-dim);padding-top:48px}
+.skills-label{font-family:var(--mono);font-size:10px;color:var(--text-faint);letter-spacing:.15em;margin-bottom:24px}
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px;max-width:600px}
+.skill-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--text-dim)}
+.skill-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:99px;overflow:hidden}
+.skill-bar{height:100%;width:var(--w);background:var(--accent);border-radius:99px;box-shadow:0 0 8px rgba(100,180,255,.5)}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-size:11px;color:var(--text-faint);border:1px solid var(--border-dim);padding:4px 12px;border-radius:99px;font-family:var(--mono)}
+
+/* Projects */
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:28px;cursor:pointer;transition:all var(--ease)}
+.project-card:hover{background:var(--bg-card-hover);border-color:rgba(100,180,255,.25);transform:translateY(-2px)}
+.project-card.featured{grid-column:1/-1}
+.project-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.project-meta{display:flex;align-items:center;gap:10px}
+.project-year{font-family:var(--mono);font-size:11px;color:var(--text-faint)}
+.project-type{font-size:11px;color:var(--accent-dim);background:var(--accent-faint);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-family:var(--mono)}
+.project-arrow{font-size:18px;color:var(--text-faint);transition:color var(--ease),transform var(--ease)}
+.project-card:hover .project-arrow{color:var(--accent);transform:translate(2px,-2px)}
+.project-name{font-size:22px;font-weight:600;color:var(--text);margin-bottom:10px;letter-spacing:-.01em}
+.project-desc{font-size:14px;color:var(--text-faint);line-height:1.7;margin-bottom:20px}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px}
+
+/* Services */
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.service-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;transition:all var(--ease)}
+.service-card:hover{background:var(--bg-card-hover);border-color:rgba(100,180,255,.25)}
+.service-icon{font-size:24px;color:var(--accent);margin-bottom:20px;font-family:var(--mono)}
+.service-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:12px;letter-spacing:-.01em}
+.service-desc{font-size:14px;color:var(--text-faint);line-height:1.75}
+
+/* Contact */
+.contact-intro{font-size:18px;color:var(--text-dim);line-height:1.7;max-width:540px;margin-bottom:52px}
+.contact-grid{display:flex;flex-direction:column;gap:12px;max-width:560px}
+.contact-card{display:flex;align-items:center;gap:20px;padding:20px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);transition:all var(--ease);cursor:pointer}
+.contact-card:hover{background:var(--bg-card-hover);border-color:rgba(100,180,255,.25);transform:translateX(4px)}
+.contact-icon{font-size:24px;width:44px;text-align:center;flex-shrink:0}
+.contact-info{flex:1;display:flex;flex-direction:column;gap:4px}
+.contact-platform{font-size:11px;color:var(--accent-dim);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.contact-value{font-size:15px;font-weight:500;color:var(--text)}
+.contact-arrow{font-size:20px;color:var(--text-faint);transition:color var(--ease),transform var(--ease)}
+.contact-card:hover .contact-arrow{color:var(--accent);transform:translate(2px,-2px)}
+
+/* Footer */
+.footer{position:relative;z-index:10;border-top:1px solid var(--border-dim);padding:28px 0}
+.footer .container{display:flex;justify-content:space-between;align-items:center}
+.footer-left,.footer-center,.footer-right{font-size:12px;color:var(--text-faint);font-family:var(--mono)}
+.footer-center{color:rgba(100,180,255,.22)}
+
+/* Responsive */
+@media(max-width:900px){
+  .container,.nav-inner{padding:0 24px}
+  .about-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  .project-card.featured{grid-column:1}
+  .services-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .footer .container{flex-direction:column;gap:8px;text-align:center}
+}
+@media(max-width:640px){
+  .nav-links{display:none;position:fixed;top:64px;left:0;right:0;flex-direction:column;background:rgba(6,10,20,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-dim);padding:16px 24px 24px;gap:2px;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-toggle{display:flex}
+  .hero-title{font-size:48px}
+  .about-stats{grid-template-columns:1fr 1fr}
+}
+</style>
 </head>
 <body>
 
-  <!-- Background canvas -->
-  <canvas id="iso-canvas"></canvas>
+<canvas id="iso-canvas"></canvas>
 
-  <!-- Navigation -->
-  <nav id="navbar">
-    <div class="nav-inner">
-      <a href="#inicio" class="nav-logo">
-        <span class="logo-text">fsp.dev</span>
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-logo"><span class="logo-text">fsp.dev</span></a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#inicio"    class="nav-link active">Início</a></li>
+      <li><a href="#sobre"     class="nav-link">Sobre</a></li>
+      <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+      <li><a href="#servicos"  class="nav-link">Serviços</a></li>
+      <li><a href="#contato"   class="nav-link">Contato</a></li>
+      <li><a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="nav-cta">Hire me →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══ INÍCIO ═══ -->
+<section id="inicio" class="section hero-section">
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">Disponível para projetos</span>
+      </div>
+      <p class="hero-eyebrow">FULL-STACK DEVELOPER · PORTO ALEGRE, BR</p>
+      <h1 class="hero-title">Frederico<br><span class="hero-title-dim">S. Petry</span></h1>
+      <p class="hero-desc">Sistemas web escaláveis construídos com atenção ao detalhe. TypeScript, React, Node.js, PostgreSQL. Código que dura, produtos que funcionam.</p>
+      <div class="hero-actions">
+        <a href="#portfolio" class="btn btn-primary">Ver projetos</a>
+        <a href="#contato"   class="btn btn-ghost">Contato →</a>
+      </div>
+      <div class="hero-projects">
+        <div class="project-chip"><span class="chip-name">cactos-rs</span><span class="chip-lang">JS</span></div>
+        <div class="project-chip"><span class="chip-name">guia-flora</span><span class="chip-lang">TS</span></div>
+        <div class="project-chip"><span class="chip-name">pdfreed</span><span class="chip-lang">PY</span></div>
+        <div class="project-chip"><span class="chip-name">fsp-dev</span><span class="chip-lang">TS</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOBRE ═══ -->
+<section id="sobre" class="section">
+  <div class="container">
+    <p class="section-label">SOBRE</p>
+    <h2 class="section-title">Desenvolvedor com<br><span class="accent">propósito real</span></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Sou Frederico Petry, desenvolvedor full-stack de Porto Alegre. Estou cursando Análise e Desenvolvimento de Sistemas na Unisinos e há mais de 4 anos construo aplicações web que resolvem problemas reais.</p>
+        <p>Trabalho principalmente com TypeScript, React e Node.js — mas não sou refém de stack. Se o problema pede Python, Go ou outra ferramenta, aprendo e entrego. O que importa é o produto final funcionar.</p>
+        <p>Sou aberto a projetos freelance, trabalho remoto e oportunidades em tempo integral. Se você tem um problema web para resolver, vamos conversar.</p>
+        <div class="about-links">
+          <a href="https://github.com/fredericospetry"   target="_blank" rel="noopener" class="about-link">GitHub ↗</a>
+          <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="about-link">Instagram ↗</a>
+        </div>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><span class="stat-value">4<span class="stat-plus">+</span></span><span class="stat-label">Anos de experiência</span></div>
+        <div class="stat-card"><span class="stat-value">20<span class="stat-plus">+</span></span><span class="stat-label">Projetos entregues</span></div>
+        <div class="stat-card"><span class="stat-value">100<span class="stat-plus">%</span></span><span class="stat-label">Comprometimento</span></div>
+        <div class="stat-card"><span class="stat-value">∞</span><span class="stat-label">Cafés consumidos</span></div>
+      </div>
+    </div>
+    <div class="skills-section">
+      <p class="skills-label">STACK TÉCNICA</p>
+      <div class="skills-grid">
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:95%"></div></div><span>TypeScript</span></div>
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:92%"></div></div><span>React</span></div>
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:88%"></div></div><span>Node.js</span></div>
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:80%"></div></div><span>PostgreSQL</span></div>
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:75%"></div></div><span>Python</span></div>
+        <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w:70%"></div></div><span>Docker</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag">REST APIs</span><span class="tag">Git</span><span class="tag">Linux</span>
+        <span class="tag">Next.js</span><span class="tag">Express</span><span class="tag">Drizzle ORM</span>
+        <span class="tag">Vite</span><span class="tag">TailwindCSS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PORTFÓLIO ═══ -->
+<section id="portfolio" class="section">
+  <div class="container">
+    <p class="section-label">PORTFÓLIO</p>
+    <h2 class="section-title">Projetos <span class="accent">selecionados</span></h2>
+    <div class="projects-grid">
+
+      <article class="project-card featured">
+        <div class="project-header">
+          <div class="project-meta"><span class="project-year">2024</span><span class="project-type">Web App</span></div>
+          <a href="https://github.com/fredericospetry/cactos-rs" target="_blank" rel="noopener" class="project-arrow">↗</a>
+        </div>
+        <h3 class="project-name">cactos-rs</h3>
+        <p class="project-desc">Portal de identificação e cultivo de cactos nativos do Rio Grande do Sul. CMS headless, catálogo visual e sistema de busca por características.</p>
+        <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">Node.js</span></div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-header">
+          <div class="project-meta"><span class="project-year">2024</span><span class="project-type">PWA</span></div>
+          <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
+        </div>
+        <h3 class="project-name">guia-flora</h3>
+        <p class="project-desc">Guia de flora nativa com geolocalização, cache offline e sistema de contribuições da comunidade.</p>
+        <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Service Worker</span></div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-header">
+          <div class="project-meta"><span class="project-year">2023</span><span class="project-type">API</span></div>
+          <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
+        </div>
+        <h3 class="project-name">pdfreed</h3>
+        <p class="project-desc">Microserviço de processamento e extração de dados de PDFs em larga escala. Suporte a OCR e exportação estruturada.</p>
+        <div class="project-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Docker</span></div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-header">
+          <div class="project-meta"><span class="project-year">2023</span><span class="project-type">Full-Stack</span></div>
+          <a href="https://github.com/fredericospetry/fsp" target="_blank" rel="noopener" class="project-arrow">↗</a>
+        </div>
+        <h3 class="project-name">fsp-dev</h3>
+        <p class="project-desc">Este portfolio. Engine estático com blog integrado, painel de admin e deploy automatizado via CI/CD.</p>
+        <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">GitHub Actions</span></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVIÇOS ═══ -->
+<section id="servicos" class="section">
+  <div class="container">
+    <p class="section-label">SERVIÇOS</p>
+    <h2 class="section-title">O que eu <span class="accent">entrego</span></h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">⟨/⟩</div>
+        <h3 class="service-title">Desenvolvimento Web</h3>
+        <p class="service-desc">Sites e aplicações web completas, do design ao deploy. React, Next.js, APIs REST, bancos de dados. Código limpo, performance real.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⬡</div>
+        <h3 class="service-title">APIs & Back-end</h3>
+        <p class="service-desc">Microserviços, APIs RESTful e integrações. Node.js, Python, PostgreSQL. Arquiteturas que escalam sem dor de cabeça.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">◎</div>
+        <h3 class="service-title">Consultoria Técnica</h3>
+        <p class="service-desc">Revisão de arquitetura, code review, mentoria. Ajudo times a tomar decisões técnicas melhores sem precisar adivinhar.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⟳</div>
+        <h3 class="service-title">Manutenção & Evolução</h3>
+        <p class="service-desc">Refatoração de sistemas legados, adição de features, correção de bugs. Entrego progressivamente sem quebrar o que já funciona.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTATO ═══ -->
+<section id="contato" class="section">
+  <div class="container">
+    <p class="section-label">CONTATO</p>
+    <h2 class="section-title">Vamos <span class="accent">conversar</span></h2>
+    <p class="contact-intro">Tem um projeto em mente, uma oportunidade ou só quer trocar uma ideia? Me chama. Respondo sempre.</p>
+    <div class="contact-grid">
+      <a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-icon">📱</div>
+        <div class="contact-info"><span class="contact-platform">WhatsApp</span><span class="contact-value">+55 51 9860-5153</span></div>
+        <span class="contact-arrow">↗</span>
       </a>
-
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#inicio" class="nav-link active">Início</a></li>
-        <li><a href="#sobre" class="nav-link">Sobre</a></li>
-        <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
-        <li><a href="#servicos" class="nav-link">Serviços</a></li>
-        <li><a href="#contato" class="nav-link">Contato</a></li>
-        <li>
-          <a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="nav-cta">
-            Hire me →
-          </a>
-        </li>
-      </ul>
+      <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-icon">📸</div>
+        <div class="contact-info"><span class="contact-platform">Instagram</span><span class="contact-value">@petryfrederico</span></div>
+        <span class="contact-arrow">↗</span>
+      </a>
+      <a href="https://github.com/fredericospetry" target="_blank" rel="noopener" class="contact-card">
+        <div class="contact-icon">⌥</div>
+        <div class="contact-info"><span class="contact-platform">GitHub</span><span class="contact-value">fredericospetry</span></div>
+        <span class="contact-arrow">↗</span>
+      </a>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <!-- INÍCIO — Hero -->
-  <section id="inicio" class="section hero-section">
-    <div class="hero-overlay"></div>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          <span class="badge-text">Disponível para projetos</span>
-        </div>
+<footer class="footer">
+  <div class="container">
+    <span class="footer-left">© 2024 Frederico S. Petry</span>
+    <span class="footer-center">Construído com cuidado. Porto Alegre, RS.</span>
+    <span class="footer-right">FSP.DEV</span>
+  </div>
+</footer>
 
-        <p class="hero-eyebrow">FULL-STACK DEVELOPER · PORTO ALEGRE, BR</p>
+<script>
+(function(){
+  "use strict";
 
-        <h1 class="hero-title">
-          Frederico<br />
-          <span class="hero-title-dim">S. Petry</span>
-        </h1>
+  /* ── Isometric canvas ── */
+  var canvas = document.getElementById("iso-canvas");
+  var ctx    = canvas.getContext("2d");
+  var t      = 0;
+  var TILE   = 44, ROWS = 20, COLS = 32;
 
-        <p class="hero-desc">
-          Sistemas web escaláveis construídos com atenção ao detalhe. TypeScript, React, Node.js, PostgreSQL. Código que dura, produtos que funcionam.
-        </p>
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
 
-        <div class="hero-actions">
-          <a href="#portfolio" class="btn btn-primary">Ver projetos</a>
-          <a href="#contato" class="btn btn-ghost">Contato →</a>
-        </div>
+  function getH(r,c,time){
+    return Math.max(0,
+      Math.sin((r*0.4 + c*0.5 + time)*0.8)*20 +
+      Math.sin((r*0.3 - c*0.4 + time*0.7))*12 + 8
+    );
+  }
 
-        <div class="hero-projects">
-          <div class="project-chip"><span class="chip-name">cactos-rs</span><span class="chip-lang">JS</span></div>
-          <div class="project-chip"><span class="chip-name">guia-flora</span><span class="chip-lang">TS</span></div>
-          <div class="project-chip"><span class="chip-name">pdfreed</span><span class="chip-lang">PY</span></div>
-          <div class="project-chip"><span class="chip-name">fsp-dev</span><span class="chip-lang">TS</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  function toIso(r,c,h){
+    return {
+      x: canvas.width  * 0.5 + (c - r) * (TILE * 0.5),
+      y: canvas.height * 0.22 + (c + r) * (TILE * 0.25) - h
+    };
+  }
 
-  <!-- SOBRE -->
-  <section id="sobre" class="section">
-    <div class="container">
-      <p class="section-label">SOBRE</p>
-      <h2 class="section-title">Desenvolvedor com<br /><span class="accent">propósito real</span></h2>
+  function cTop(h)  { var v=Math.min(255,120+h*3); return "rgb("+Math.round(v*.3)+","+Math.round(v*.6)+","+Math.round(v)+")"; }
+  function cLeft(h) { var v=Math.min(255, 80+h*2); return "rgb("+Math.round(v*.2)+","+Math.round(v*.4)+","+Math.round(v*.7)+")"; }
+  function cRight(h){ var v=Math.min(255, 60+h*2); return "rgb("+Math.round(v*.15)+","+Math.round(v*.3)+","+Math.round(v*.6)+")"; }
 
-      <div class="about-grid">
-        <div class="about-text">
-          <p>Sou Frederico Petry, desenvolvedor full-stack de Porto Alegre. Estou cursando Análise e Desenvolvimento de Sistemas na Unisinos e há mais de 4 anos construo aplicações web que resolvem problemas reais.</p>
-          <p>Trabalho principalmente com TypeScript, React e Node.js — mas não sou refém de stack. Se o problema pede Python, Go ou outra ferramenta, aprendo e entrego. O que importa é o produto final funcionar.</p>
-          <p>Sou aberto a projetos freelance, trabalho remoto e oportunidades em tempo integral. Se você tem um problema web para resolver, vamos conversar.</p>
-          <div class="about-links">
-            <a href="https://github.com/fredericospetry" target="_blank" rel="noopener" class="about-link">GitHub ↗</a>
-            <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="about-link">Instagram ↗</a>
-          </div>
-        </div>
+  function draw(){
+    t += 0.018;
+    var W=canvas.width, H=canvas.height;
+    var tw=TILE*.5, th=TILE*.25, fh=TILE*.15;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle="#060a14";
+    ctx.fillRect(0,0,W,H);
 
-        <div class="about-stats">
-          <div class="stat-card"><span class="stat-value">4<span class="stat-plus">+</span></span><span class="stat-label">Anos de experiência</span></div>
-          <div class="stat-card"><span class="stat-value">20<span class="stat-plus">+</span></span><span class="stat-label">Projetos entregues</span></div>
-          <div class="stat-card"><span class="stat-value">100<span class="stat-plus">%</span></span><span class="stat-label">Comprometimento</span></div>
-          <div class="stat-card"><span class="stat-value">∞</span><span class="stat-label">Cafés consumidos</span></div>
-        </div>
-      </div>
+    for(var r=ROWS-1; r>=0; r--){
+      for(var c=0; c<COLS; c++){
+        var h=getH(r,c,t);
+        var p=toIso(r,c,h);
 
-      <div class="skills-section">
-        <p class="skills-label">STACK TÉCNICA</p>
-        <div class="skills-grid">
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 95%"></div></div><span>TypeScript</span></div>
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 92%"></div></div><span>React</span></div>
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 88%"></div></div><span>Node.js</span></div>
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 80%"></div></div><span>PostgreSQL</span></div>
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 75%"></div></div><span>Python</span></div>
-          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 70%"></div></div><span>Docker</span></div>
-        </div>
-        <div class="tags">
-          <span class="tag">REST APIs</span><span class="tag">Git</span><span class="tag">Linux</span>
-          <span class="tag">Next.js</span><span class="tag">Express</span><span class="tag">Drizzle ORM</span>
-          <span class="tag">Vite</span><span class="tag">TailwindCSS</span>
-        </div>
-      </div>
-    </div>
-  </section>
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y); ctx.lineTo(p.x+tw,p.y+th);
+        ctx.lineTo(p.x,p.y+th*2); ctx.lineTo(p.x-tw,p.y+th);
+        ctx.closePath();
+        ctx.fillStyle=cTop(h); ctx.fill();
+        ctx.strokeStyle="rgba(0,0,0,.3)"; ctx.lineWidth=.5; ctx.stroke();
 
-  <!-- PORTFÓLIO -->
-  <section id="portfolio" class="section">
-    <div class="container">
-      <p class="section-label">PORTFÓLIO</p>
-      <h2 class="section-title">Projetos <span class="accent">selecionados</span></h2>
+        ctx.beginPath();
+        ctx.moveTo(p.x-tw,p.y+th); ctx.lineTo(p.x,p.y+th*2);
+        ctx.lineTo(p.x,p.y+th*2+fh); ctx.lineTo(p.x-tw,p.y+th+fh);
+        ctx.closePath();
+        ctx.fillStyle=cLeft(h); ctx.fill();
+        ctx.strokeStyle="rgba(0,0,0,.3)"; ctx.stroke();
 
-      <div class="projects-grid">
-        <article class="project-card featured">
-          <div class="project-header">
-            <div class="project-meta"><span class="project-year">2024</span><span class="project-type">Web App</span></div>
-            <a href="https://github.com/fredericospetry/cactos-rs" target="_blank" rel="noopener" class="project-arrow">↗</a>
-          </div>
-          <h3 class="project-name">cactos-rs</h3>
-          <p class="project-desc">Portal de identificação e cultivo de cactos nativos do Rio Grande do Sul. CMS headless, catálogo visual e sistema de busca por características.</p>
-          <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">Node.js</span></div>
-        </article>
+        ctx.beginPath();
+        ctx.moveTo(p.x+tw,p.y+th); ctx.lineTo(p.x,p.y+th*2);
+        ctx.lineTo(p.x,p.y+th*2+fh); ctx.lineTo(p.x+tw,p.y+th+fh);
+        ctx.closePath();
+        ctx.fillStyle=cRight(h); ctx.fill();
+        ctx.strokeStyle="rgba(0,0,0,.3)"; ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
 
-        <article class="project-card">
-          <div class="project-header">
-            <div class="project-meta"><span class="project-year">2024</span><span class="project-type">PWA</span></div>
-            <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
-          </div>
-          <h3 class="project-name">guia-flora</h3>
-          <p class="project-desc">Guia de flora nativa com geolocalização, cache offline e sistema de contribuições da comunidade.</p>
-          <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Service Worker</span></div>
-        </article>
+  /* ── Navbar ── */
+  var navbar   = document.getElementById("navbar");
+  var sections = document.querySelectorAll("section[id]");
+  var navLinks = document.querySelectorAll(".nav-link");
 
-        <article class="project-card">
-          <div class="project-header">
-            <div class="project-meta"><span class="project-year">2023</span><span class="project-type">API</span></div>
-            <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
-          </div>
-          <h3 class="project-name">pdfreed</h3>
-          <p class="project-desc">Microserviço de processamento e extração de dados de PDFs em larga escala. Suporte a OCR e exportação estruturada.</p>
-          <div class="project-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Docker</span></div>
-        </article>
+  function onScroll(){
+    if(window.scrollY > 40) navbar.classList.add("scrolled");
+    else navbar.classList.remove("scrolled");
+    var cur = "";
+    sections.forEach(function(s){ if(window.scrollY >= s.offsetTop-100) cur=s.id; });
+    navLinks.forEach(function(l){ l.classList.toggle("active", l.getAttribute("href")==="#"+cur); });
+  }
 
-        <article class="project-card">
-          <div class="project-header">
-            <div class="project-meta"><span class="project-year">2023</span><span class="project-type">Full-Stack</span></div>
-            <a href="https://github.com/fredericospetry/fsp" target="_blank" rel="noopener" class="project-arrow">↗</a>
-          </div>
-          <h3 class="project-name">fsp-dev</h3>
-          <p class="project-desc">Este portfolio. Engine estático com blog integrado, painel de admin e deploy automatizado via CI/CD.</p>
-          <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">GitHub Actions</span></div>
-        </article>
-      </div>
-    </div>
-  </section>
+  /* ── Mobile menu ── */
+  var toggle  = document.getElementById("nav-toggle");
+  var navList = document.getElementById("nav-links");
+  toggle.addEventListener("click", function(){ navList.classList.toggle("open"); });
+  navList.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", function(){ navList.classList.remove("open"); }); });
 
-  <!-- SERVIÇOS -->
-  <section id="servicos" class="section">
-    <div class="container">
-      <p class="section-label">SERVIÇOS</p>
-      <h2 class="section-title">O que eu <span class="accent">entrego</span></h2>
+  /* ── Smooth scroll ── */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener("click", function(e){
+      var target = document.querySelector(a.getAttribute("href"));
+      if(target){ e.preventDefault(); target.scrollIntoView({behavior:"smooth"}); }
+    });
+  });
 
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">⟨/⟩</div>
-          <h3 class="service-title">Desenvolvimento Web</h3>
-          <p class="service-desc">Sites e aplicações web completas, do design ao deploy. React, Next.js, APIs REST, bancos de dados. Código limpo, performance real.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">⬡</div>
-          <h3 class="service-title">APIs & Back-end</h3>
-          <p class="service-desc">Microserviços, APIs RESTful e integrações. Node.js, Python, PostgreSQL. Arquiteturas que escalam sem dor de cabeça.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">◎</div>
-          <h3 class="service-title">Consultoria Técnica</h3>
-          <p class="service-desc">Revisão de arquitetura, code review, mentoria. Ajudo times a tomar decisões técnicas melhores sem precisar adivinhar.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">⟳</div>
-          <h3 class="service-title">Manutenção & Evolução</h3>
-          <p class="service-desc">Refatoração de sistemas legados, adição de features, correção de bugs. Entrego progressivamente sem quebrar o que já funciona.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  /* ── Scroll reveal ── */
+  function initReveal(){
+    if(!window.IntersectionObserver) return;
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.style.opacity="1";
+          e.target.style.transform="translateY(0)";
+          obs.unobserve(e.target);
+        }
+      });
+    },{threshold:.08});
+    document.querySelectorAll(".project-card,.service-card,.contact-card,.stat-card,.about-text p").forEach(function(el,i){
+      el.style.opacity="0";
+      el.style.transform="translateY(24px)";
+      el.style.transition="opacity .5s ease "+(i*.05)+"s, transform .5s ease "+(i*.05)+"s";
+      obs.observe(el);
+    });
+  }
 
-  <!-- CONTATO -->
-  <section id="contato" class="section">
-    <div class="container">
-      <p class="section-label">CONTATO</p>
-      <h2 class="section-title">Vamos <span class="accent">conversar</span></h2>
-      <p class="contact-intro">Tem um projeto em mente, uma oportunidade ou só quer trocar uma ideia? Me chama. Respondo sempre.</p>
-
-      <div class="contact-grid">
-        <a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">📱</div>
-          <div class="contact-info"><span class="contact-platform">WhatsApp</span><span class="contact-value">+55 51 9860-5153</span></div>
-          <span class="contact-arrow">↗</span>
-        </a>
-        <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">📸</div>
-          <div class="contact-info"><span class="contact-platform">Instagram</span><span class="contact-value">@petryfrederico</span></div>
-          <span class="contact-arrow">↗</span>
-        </a>
-        <a href="https://github.com/fredericospetry" target="_blank" rel="noopener" class="contact-card">
-          <div class="contact-icon">⌥</div>
-          <div class="contact-info"><span class="contact-platform">GitHub</span><span class="contact-value">fredericospetry</span></div>
-          <span class="contact-arrow">↗</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <span class="footer-left">© 2024 Frederico S. Petry</span>
-      <span class="footer-center">Construído com cuidado. Porto Alegre, RS.</span>
-      <span class="footer-right">FSP.DEV</span>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+  /* ── Init ── */
+  window.addEventListener("resize", resize, {passive:true});
+  window.addEventListener("scroll", onScroll, {passive:true});
+  resize();
+  draw();
+  initReveal();
+  onScroll();
+})();
+</script>
 </body>
 </html>
