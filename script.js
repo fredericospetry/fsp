@@ -1,304 +1,127 @@
-// Navegação entre seções
-const menuItems = document.querySelectorAll('.menu-item');
-const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-const sections = document.querySelectorAll('.content-section');
-const bgPrevBtn = document.getElementById('bgPrevBtn');
-const bgNextBtn = document.getElementById('bgNextBtn');
-const bgStopAutoBtn = document.getElementById('bgStopAutoBtn');
-const bgIntervalSelect = document.getElementById('bgIntervalSelect');
+(function () {
+  "use strict";
 
-const bgExtensions = ['png', 'gif', 'jpg', 'jpeg'];
-const backgroundFolder = 'fundos/';
-const maxScanIndex = 300;
-const stopAfterMissingStreak = 20;
-const defaultBackgroundAutoSwitchDelay = 20000;
-const backgroundFadeDuration = 900;
-const backgroundSwitchIntervalStorageKey = 'fspBackgroundSwitchInterval';
+  const canvas = document.getElementById("iso-canvas");
+  const ctx = canvas.getContext("2d");
+  let t = 0;
+  const TILE = 44, ROWS = 20, COLS = 32;
 
-let availableBackgrounds = [];
-let currentBackgroundIndex = 0;
-let backgroundAutoSwitchInterval = null;
-let backgroundTransitionTimeout = null;
-let backgroundAutoSwitchDelay = defaultBackgroundAutoSwitchDelay;
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
-function normalizeBackgroundAutoSwitchDelay(value) {
-    const parsed = Number(value);
+  function getH(r, c, time) {
+    return Math.max(0,
+      Math.sin((r * 0.4 + c * 0.5 + time) * 0.8) * 20 +
+      Math.sin((r * 0.3 - c * 0.4 + time * 0.7)) * 12 + 8
+    );
+  }
 
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-        return defaultBackgroundAutoSwitchDelay;
-    }
-
-    return parsed;
-}
-
-function setBackgroundAutoSwitchDelay(value) {
-    backgroundAutoSwitchDelay = normalizeBackgroundAutoSwitchDelay(value);
-    localStorage.setItem(backgroundSwitchIntervalStorageKey, String(backgroundAutoSwitchDelay));
-
-    if (bgIntervalSelect) {
-        bgIntervalSelect.value = String(backgroundAutoSwitchDelay);
-    }
-}
-
-function checkImageExists(src) {
-    return new Promise(resolve => {
-        const img = new Image();
-        img.onload = () => resolve(src);
-        img.onerror = () => resolve(null);
-        img.src = src;
-    });
-}
-
-async function discoverBackgrounds() {
-    const foundBackgrounds = [];
-    let missingStreak = 0;
-
-    for (let index = 1; index <= maxScanIndex; index += 1) {
-        const candidatesForIndex = bgExtensions.map(ext => `${backgroundFolder}fundo_${index}.${ext}`);
-        const checks = await Promise.all(candidatesForIndex.map(checkImageExists));
-        const validForIndex = checks.filter(Boolean);
-
-        if (validForIndex.length > 0) {
-            foundBackgrounds.push(...validForIndex);
-            missingStreak = 0;
-        } else {
-            missingStreak += 1;
-
-            if (missingStreak >= stopAfterMissingStreak && foundBackgrounds.length > 0) {
-                break;
-            }
-        }
-    }
-
-    return foundBackgrounds;
-}
-
-function applyBackground(fileName, withTransition = true) {
-    const setBackground = () => {
-        document.body.style.setProperty('--bg-current', `url('${fileName}')`);
-        document.body.style.setProperty('--bg-next', `url('${fileName}')`);
-        localStorage.setItem('fspSelectedBackground', fileName);
+  function toIso(r, c, h) {
+    return {
+      x: canvas.width * 0.5 + (c - r) * (TILE * 0.5),
+      y: canvas.height * 0.22 + (c + r) * (TILE * 0.25) - h,
     };
+  }
 
-    if (!withTransition) {
-        setBackground();
-        return;
+  function colorTop(h)   { const v = Math.min(255, 120 + h * 3); return `rgb(${v*.3|0},${v*.6|0},${v|0})`; }
+  function colorLeft(h)  { const v = Math.min(255,  80 + h * 2); return `rgb(${v*.2|0},${v*.4|0},${v*.7|0})`; }
+  function colorRight(h) { const v = Math.min(255,  60 + h * 2); return `rgb(${v*.15|0},${v*.3|0},${v*.6|0})`; }
+
+  function drawFrame() {
+    t += 0.018;
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = "#060a14";
+    ctx.fillRect(0, 0, W, H);
+
+    const tw = TILE * 0.5, th = TILE * 0.25, fh = TILE * 0.15;
+
+    for (let r = ROWS - 1; r >= 0; r--) {
+      for (let c = 0; c < COLS; c++) {
+        const h = getH(r, c, t);
+        const p = toIso(r, c, h);
+
+        // Top
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y); ctx.lineTo(p.x+tw, p.y+th);
+        ctx.lineTo(p.x, p.y+th*2); ctx.lineTo(p.x-tw, p.y+th);
+        ctx.closePath();
+        ctx.fillStyle = colorTop(h); ctx.fill();
+        ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.lineWidth = 0.5; ctx.stroke();
+
+        // Left
+        ctx.beginPath();
+        ctx.moveTo(p.x-tw, p.y+th); ctx.lineTo(p.x, p.y+th*2);
+        ctx.lineTo(p.x, p.y+th*2+fh); ctx.lineTo(p.x-tw, p.y+th+fh);
+        ctx.closePath();
+        ctx.fillStyle = colorLeft(h); ctx.fill();
+        ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.stroke();
+
+        // Right
+        ctx.beginPath();
+        ctx.moveTo(p.x+tw, p.y+th); ctx.lineTo(p.x, p.y+th*2);
+        ctx.lineTo(p.x, p.y+th*2+fh); ctx.lineTo(p.x+tw, p.y+th+fh);
+        ctx.closePath();
+        ctx.fillStyle = colorRight(h); ctx.fill();
+        ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.stroke();
+      }
     }
+    requestAnimationFrame(drawFrame);
+  }
 
-    if (backgroundTransitionTimeout) {
-        clearTimeout(backgroundTransitionTimeout);
-    }
+  // Navbar scroll
+  const navbar = document.getElementById("navbar");
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
 
-    document.body.style.setProperty('--bg-next', `url('${fileName}')`);
-    document.body.classList.add('bg-fade-transition');
+  function onScroll() {
+    navbar.classList.toggle("scrolled", window.scrollY > 40);
+    let current = "";
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    navLinks.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + current));
+  }
 
-    backgroundTransitionTimeout = setTimeout(() => {
-        setBackground();
-        document.body.classList.remove('bg-fade-transition');
-        backgroundTransitionTimeout = null;
-    }, backgroundFadeDuration);
-}
+  // Mobile menu
+  const toggle = document.getElementById("nav-toggle");
+  const navList = document.getElementById("nav-links");
+  toggle.addEventListener("click", () => navList.classList.toggle("open"));
+  navList.querySelectorAll("a").forEach(a => a.addEventListener("click", () => navList.classList.remove("open")));
 
-function toggleBackgroundButtonsState() {
-    const hasOptions = availableBackgrounds.length > 1;
-    if (bgPrevBtn) bgPrevBtn.disabled = !hasOptions;
-    if (bgNextBtn) bgNextBtn.disabled = !hasOptions;
-}
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener("click", e => {
+      const t = document.querySelector(a.getAttribute("href"));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
+    });
+  });
 
-function changeBackground(step) {
-    if (availableBackgrounds.length === 0) return;
-
-    currentBackgroundIndex =
-        (currentBackgroundIndex + step + availableBackgrounds.length) % availableBackgrounds.length;
-
-    applyBackground(availableBackgrounds[currentBackgroundIndex]);
-}
-
-function startBackgroundAutoSwitch() {
-    if (backgroundAutoSwitchInterval) {
-        clearInterval(backgroundAutoSwitchInterval);
-    }
-
-    if (availableBackgrounds.length <= 1) return;
-
-    backgroundAutoSwitchInterval = setInterval(() => {
-        changeBackground(1);
-    }, backgroundAutoSwitchDelay);
-}
-
-function toggleBackgroundAutoSwitch() {
-    if (backgroundAutoSwitchInterval) {
-        clearInterval(backgroundAutoSwitchInterval);
-        backgroundAutoSwitchInterval = null;
-
-        if (bgStopAutoBtn) {
-            bgStopAutoBtn.classList.add('is-stopped');
-            bgStopAutoBtn.innerHTML = '<i class="fas fa-play"></i>';
-            bgStopAutoBtn.setAttribute('aria-pressed', 'true');
-            bgStopAutoBtn.setAttribute('aria-label', 'Retomar transição automática de fundo');
+  // Scroll reveal
+  function initReveal() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = "1";
+          e.target.style.transform = "translateY(0)";
+          obs.unobserve(e.target);
         }
+      });
+    }, { threshold: 0.08 });
 
-        return;
-    }
+    document.querySelectorAll(".project-card, .service-card, .contact-card, .stat-card, .about-text p")
+      .forEach((el, i) => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(24px)";
+        el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s`;
+        obs.observe(el);
+      });
+  }
 
-    startBackgroundAutoSwitch();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", resize);
 
-    if (bgStopAutoBtn) {
-        bgStopAutoBtn.classList.remove('is-stopped');
-        bgStopAutoBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        bgStopAutoBtn.setAttribute('aria-pressed', 'false');
-        bgStopAutoBtn.setAttribute('aria-label', 'Pausar transição automática de fundo');
-    }
-}
-
-async function setupBackgroundSwitcher() {
-    if (!bgPrevBtn || !bgNextBtn) return;
-
-    const savedAutoSwitchDelay = localStorage.getItem(backgroundSwitchIntervalStorageKey);
-    setBackgroundAutoSwitchDelay(savedAutoSwitchDelay ?? defaultBackgroundAutoSwitchDelay);
-
-    const found = await discoverBackgrounds();
-    availableBackgrounds = [...new Set(found)];
-
-    if (availableBackgrounds.length === 0) {
-        availableBackgrounds = [`${backgroundFolder}fundo_1.jpg`];
-    }
-
-    const savedBackground = localStorage.getItem('fspSelectedBackground');
-    const savedIndex = savedBackground ? availableBackgrounds.indexOf(savedBackground) : -1;
-
-    currentBackgroundIndex = savedIndex >= 0 ? savedIndex : 0;
-    applyBackground(availableBackgrounds[currentBackgroundIndex], false);
-    toggleBackgroundButtonsState();
-    startBackgroundAutoSwitch();
-
-    bgPrevBtn.addEventListener('click', () => changeBackground(-1));
-    bgNextBtn.addEventListener('click', () => changeBackground(1));
-
-    if (bgStopAutoBtn) {
-        bgStopAutoBtn.disabled = availableBackgrounds.length <= 1;
-        bgStopAutoBtn.classList.remove('is-stopped');
-        bgStopAutoBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        bgStopAutoBtn.setAttribute('aria-pressed', 'false');
-        bgStopAutoBtn.setAttribute('aria-label', 'Pausar transição automática de fundo');
-        bgStopAutoBtn.addEventListener('click', toggleBackgroundAutoSwitch);
-    }
-
-    if (bgIntervalSelect) {
-        bgIntervalSelect.value = String(backgroundAutoSwitchDelay);
-        bgIntervalSelect.addEventListener('change', function () {
-            const wasRunning = Boolean(backgroundAutoSwitchInterval);
-            setBackgroundAutoSwitchDelay(this.value);
-
-            if (wasRunning) {
-                startBackgroundAutoSwitch();
-            }
-        });
-    }
-}
-
-function typeElementLetterByLetter(element, speed = 90) {
-    if (!element) return;
-
-    const fullText = element.dataset.fullText || element.textContent;
-    element.dataset.fullText = fullText;
-
-    if (element._typingTimeout) {
-        clearTimeout(element._typingTimeout);
-    }
-
-    element.textContent = '';
-    let index = 0;
-
-    const typeNext = () => {
-        element.textContent = fullText.slice(0, index + 1);
-        index += 1;
-
-        if (index < fullText.length) {
-            element._typingTimeout = setTimeout(typeNext, speed);
-        }
-    };
-
-    if (fullText.length > 0) {
-        typeNext();
-    }
-}
-
-function runSectionTyping(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (!section) return;
-
-    const heroSubtitle = section.querySelector('.hero-subtitle');
-    const sectionTitle = section.querySelector('.section-title');
-
-    if (heroSubtitle) {
-        typeElementLetterByLetter(heroSubtitle, 110);
-    }
-
-    if (sectionTitle) {
-        typeElementLetterByLetter(sectionTitle, 110);
-    }
-}
-
-function switchSection(sectionId, clickedItem, allItems) {
-    allItems.forEach(i => i.classList.remove('active'));
-    clickedItem.classList.add('active');
-    sections.forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-
-    const allMenuItems = [...document.querySelectorAll('.menu-item'), ...document.querySelectorAll('.mobile-nav-item')];
-    allMenuItems.forEach(item => {
-        if (item.getAttribute('data-section') === sectionId) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-
-    runSectionTyping(sectionId);
-}
-
-menuItems.forEach(item => {
-    item.addEventListener('click', function (e) {
-        e.preventDefault();
-        const sectionId = this.getAttribute('data-section');
-        switchSection(sectionId, this, menuItems);
-    });
-});
-
-mobileNavItems.forEach(item => {
-    item.addEventListener('click', function (e) {
-        e.preventDefault();
-        const sectionId = this.getAttribute('data-section');
-        switchSection(sectionId, this, mobileNavItems);
-
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        if (mobileNav) mobileNav.classList.remove('open');
-        if (mobileMenuBtn) mobileMenuBtn.classList.remove('active');
-    });
-});
-
-// Toggle dropdown mobile
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileNav = document.getElementById('mobileNav');
-
-if (mobileMenuBtn && mobileNav) {
-    mobileMenuBtn.addEventListener('click', function () {
-        mobileNav.classList.toggle('open');
-        this.classList.toggle('active');
-    });
-}
-
-document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-});
-
-const initialSection = document.querySelector('.content-section.active');
-if (initialSection) {
-    runSectionTyping(initialSection.id);
-}
-
-setupBackgroundSwitcher();
-
-window.addEventListener('resize', refreshCurrentBackgroundOnResize);
+  document.addEventListener("DOMContentLoaded", () => {
+    resize();
+    drawFrame();
+    initReveal();
+    onScroll();
+  });
+})();
