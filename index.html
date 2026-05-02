@@ -1,177 +1,245 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FSP ADS - Gestão de TI</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FSP.DEV — Frederico S. Petry</title>
+  <meta name="description" content="Portfólio de Frederico S. Petry — Desenvolvedor Full-Stack especializado em TypeScript, React e Node.js." />
+  <meta property="og:title" content="FSP.DEV — Frederico S. Petry" />
+  <meta property="og:description" content="Desenvolvedor Full-Stack. Porto Alegre, BR." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <!-- Header Mobile -->
-    <header class="mobile-header">
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="mobile-logo">
-            <img src="logo.png" alt="FSP Logo">
-        </div>
-        <nav class="mobile-nav" id="mobileNav">
-            <a href="#inicio" class="mobile-nav-item active" data-section="inicio">
-                <i class="fas fa-terminal"></i> Início
-            </a>
-            <a href="#sobre" class="mobile-nav-item" data-section="sobre">
-                <i class="fas fa-user-astronaut"></i> Sobre mim
-            </a>
-            <a href="#portfolio" class="mobile-nav-item" data-section="portfolio">
-                <i class="fas fa-code"></i> Portfólio
-            </a>
-            <a href="#servicos" class="mobile-nav-item" data-section="servicos">
-                <i class="fas fa-microchip"></i> Serviços
-            </a>
-            <a href="#contato" class="mobile-nav-item" data-section="contato">
-                <i class="fas fa-satellite-dish"></i> Contato
-            </a>
-        </nav>
-    </header>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+  <!-- Background canvas -->
+  <canvas id="iso-canvas"></canvas>
 
-        <div class="profile">
-            <img src="logo.png" alt="Perfil" class="profile-img">
-        </div>
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-logo">
+        <span class="logo-text">fsp.dev</span>
+      </a>
 
-        <nav class="menu">
-            <a href="#inicio" class="menu-item active" data-section="inicio">
-                <span class="menu-icon"><i class="fas fa-terminal"></i></span>
-                <span class="menu-text">Início</span>
-            </a>
-            <a href="#sobre" class="menu-item" data-section="sobre">
-                <span class="menu-icon"><i class="fas fa-user-astronaut"></i></span>
-                <span class="menu-text">Sobre mim</span>
-            </a>
-            <a href="#portfolio" class="menu-item" data-section="portfolio">
-                <span class="menu-icon"><i class="fas fa-code"></i></span>
-                <span class="menu-text">Portfólio</span>
-            </a>
-            <a href="#servicos" class="menu-item" data-section="servicos">
-                <span class="menu-icon"><i class="fas fa-microchip"></i></span>
-                <span class="menu-text">Serviços</span>
-            </a>
-            <a href="#contato" class="menu-item" data-section="contato">
-                <span class="menu-icon"><i class="fas fa-satellite-dish"></i></span>
-                <span class="menu-text">Contato</span>
-            </a>
-        </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
 
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#inicio" class="nav-link active">Início</a></li>
+        <li><a href="#sobre" class="nav-link">Sobre</a></li>
+        <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+        <li><a href="#servicos" class="nav-link">Serviços</a></li>
+        <li><a href="#contato" class="nav-link">Contato</a></li>
+        <li>
+          <a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="nav-cta">
+            Hire me →
+          </a>
+        </li>
+      </ul>
     </div>
+  </nav>
 
-    <!-- Conteúdo Principal -->
-    <div class="main-content">
-        <div class="bg-switcher" aria-label="Alterar plano de fundo">
-            <button id="bgPrevBtn" class="bg-switch-btn" aria-label="Fundo anterior"><i
-                    class="fas fa-chevron-circle-left"></i></button>
-            <span class="bg-switch-label">Tema de Fundo</span>
-            <button id="bgNextBtn" class="bg-switch-btn" aria-label="Próximo fundo"><i
-                    class="fas fa-chevron-circle-right"></i></button>
-            <span class="bg-time-label">Tempo Exib.:</span>
-            <select id="bgIntervalSelect" class="bg-interval-select"
-                aria-label="Tempo de transição automática do fundo">
-                <option value="10000">10s</option>
-                <option value="15000">15s</option>
-                <option value="20000" selected>20s</option>
-                <option value="30000">30s</option>
-            </select>
-            <button id="bgStopAutoBtn" class="bg-switch-btn bg-stop-btn" aria-pressed="false"
-                aria-label="Pausar transição automática de fundo"><i class="fas fa-pause"></i></button>
+  <!-- INÍCIO — Hero -->
+  <section id="inicio" class="section hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span class="badge-text">Disponível para projetos</span>
         </div>
 
-        <!-- Seção Início -->
-        <div id="inicio" class="content-section active">
-            <h2 class="section-title">Bem-vindo</h2>
-            <p class="section-text">
-                Desenvolvimento de sites e sistemas web sob medida,
-                utilizando boas práticas, tecnologias atuais e
-                soluções adaptadas às necessidades de cada projeto.
-            </p>
+        <p class="hero-eyebrow">FULL-STACK DEVELOPER · PORTO ALEGRE, BR</p>
+
+        <h1 class="hero-title">
+          Frederico<br />
+          <span class="hero-title-dim">S. Petry</span>
+        </h1>
+
+        <p class="hero-desc">
+          Sistemas web escaláveis construídos com atenção ao detalhe. TypeScript, React, Node.js, PostgreSQL. Código que dura, produtos que funcionam.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn btn-primary">Ver projetos</a>
+          <a href="#contato" class="btn btn-ghost">Contato →</a>
         </div>
 
-        <!-- Seção Sobre -->
-        <div id="sobre" class="content-section">
-            <h2 class="section-title">Sobre mim</h2>
-            <p class="section-text">
-                Desenvolvo sites e sistemas web utilizando boas práticas de desenvolvimento,
-                com ênfase em performance, usabilidade e estrutura de código. Os projetos são
-                planejados de forma objetiva, visando soluções eficientes, escaláveis e alinhadas
-                às necessidades de cada aplicação.
-            </p>
+        <div class="hero-projects">
+          <div class="project-chip"><span class="chip-name">cactos-rs</span><span class="chip-lang">JS</span></div>
+          <div class="project-chip"><span class="chip-name">guia-flora</span><span class="chip-lang">TS</span></div>
+          <div class="project-chip"><span class="chip-name">pdfreed</span><span class="chip-lang">PY</span></div>
+          <div class="project-chip"><span class="chip-name">fsp-dev</span><span class="chip-lang">TS</span></div>
         </div>
-
-        <!-- Seção Portfólio -->
-        <div id="portfolio" class="content-section">
-            <h2 class="section-title">Portfólio</h2>
-            <p class="section-text">
-                Veja uma seleção dos meus melhores projetos,
-                demonstrando minhas habilidades em design, desenvolvimento e solução de problemas.
-            </p>
-            <!-- Container das imagens -->
-            <div class="image-container">
-                <a href="https://cactosrs.netlify.app/" target="_blank" class="image-link">
-                    <img src="img1.png" alt="Cactos RS">
-                </a>
-                <a href="https://guia-de-cultivo-de-cactos.netlify.app/" target="_blank" class="image-link">
-                    <img src="img2.png" alt="Guia de Cultivo de Cactos">
-                </a>
-                <a href="https://guiaflorapromata.netlify.app/" target="_blank" class="image-link">
-                    <img src="img3.png" alt="Guia de Cultivo de Cactos">
-                </a>
-                <a href="https://pdfreed.netlify.app/" target="_blank" class="image-link">
-                    <img src="img4.png" alt="Guia de Cultivo de Cactos">
-                </a>
-            </div>
-        </div>
-
-        <!-- Seção Serviços -->
-        <div id="servicos" class="content-section">
-            <h2 class="section-title">Serviços</h2>
-            <p class="section-text">
-                Soluções web para empresas, setor público e organizações do terceiro
-                setor, atendendo prefeituras, órgãos públicos e ONGs que necessitam
-                de sistemas, portais ou canais digitais para comunicação e atendimento.
-            </p>
-
-            <div class="services-tech-icons">
-                <img src="css3.svg" alt="CSS">
-                <img src="html5.svg" alt="HTML">
-                <img src="javascript.svg" alt="JS">
-                <img src="typescript.svg" alt="TYPESCRIPT">
-                <img src="php.svg" alt="PHP">
-                <img src="python.svg" alt="PYTHON">
-            </div>
-        </div>
-
-        <!-- Seção Contato -->
-        <div id="contato" class="content-section">
-            <h2 class="section-title">Contato</h2>
-
-            <div class="contact-icons">
-                <a href="https://wa.me/555198605153" target="_blank" aria-label="WhatsApp">
-                    <img src="whatsapp.png" alt="WhatsApp">
-                </a>
-
-                <a href="https://instagram.com/petryfrederico" target="_blank" aria-label="Instagram">
-                    <img src="instagram.png" alt="Instagram">
-                </a>
-            </div>
-        </div>
-
+      </div>
     </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- SOBRE -->
+  <section id="sobre" class="section">
+    <div class="container">
+      <p class="section-label">SOBRE</p>
+      <h2 class="section-title">Desenvolvedor com<br /><span class="accent">propósito real</span></h2>
 
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Sou Frederico Petry, desenvolvedor full-stack de Porto Alegre. Estou cursando Análise e Desenvolvimento de Sistemas na Unisinos e há mais de 4 anos construo aplicações web que resolvem problemas reais.</p>
+          <p>Trabalho principalmente com TypeScript, React e Node.js — mas não sou refém de stack. Se o problema pede Python, Go ou outra ferramenta, aprendo e entrego. O que importa é o produto final funcionar.</p>
+          <p>Sou aberto a projetos freelance, trabalho remoto e oportunidades em tempo integral. Se você tem um problema web para resolver, vamos conversar.</p>
+          <div class="about-links">
+            <a href="https://github.com/fredericospetry" target="_blank" rel="noopener" class="about-link">GitHub ↗</a>
+            <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="about-link">Instagram ↗</a>
+          </div>
+        </div>
+
+        <div class="about-stats">
+          <div class="stat-card"><span class="stat-value">4<span class="stat-plus">+</span></span><span class="stat-label">Anos de experiência</span></div>
+          <div class="stat-card"><span class="stat-value">20<span class="stat-plus">+</span></span><span class="stat-label">Projetos entregues</span></div>
+          <div class="stat-card"><span class="stat-value">100<span class="stat-plus">%</span></span><span class="stat-label">Comprometimento</span></div>
+          <div class="stat-card"><span class="stat-value">∞</span><span class="stat-label">Cafés consumidos</span></div>
+        </div>
+      </div>
+
+      <div class="skills-section">
+        <p class="skills-label">STACK TÉCNICA</p>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 95%"></div></div><span>TypeScript</span></div>
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 92%"></div></div><span>React</span></div>
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 88%"></div></div><span>Node.js</span></div>
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 80%"></div></div><span>PostgreSQL</span></div>
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 75%"></div></div><span>Python</span></div>
+          <div class="skill-item"><div class="skill-bar-wrap"><div class="skill-bar" style="--w: 70%"></div></div><span>Docker</span></div>
+        </div>
+        <div class="tags">
+          <span class="tag">REST APIs</span><span class="tag">Git</span><span class="tag">Linux</span>
+          <span class="tag">Next.js</span><span class="tag">Express</span><span class="tag">Drizzle ORM</span>
+          <span class="tag">Vite</span><span class="tag">TailwindCSS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFÓLIO -->
+  <section id="portfolio" class="section">
+    <div class="container">
+      <p class="section-label">PORTFÓLIO</p>
+      <h2 class="section-title">Projetos <span class="accent">selecionados</span></h2>
+
+      <div class="projects-grid">
+        <article class="project-card featured">
+          <div class="project-header">
+            <div class="project-meta"><span class="project-year">2024</span><span class="project-type">Web App</span></div>
+            <a href="https://github.com/fredericospetry/cactos-rs" target="_blank" rel="noopener" class="project-arrow">↗</a>
+          </div>
+          <h3 class="project-name">cactos-rs</h3>
+          <p class="project-desc">Portal de identificação e cultivo de cactos nativos do Rio Grande do Sul. CMS headless, catálogo visual e sistema de busca por características.</p>
+          <div class="project-tags"><span class="tag">JavaScript</span><span class="tag">CSS</span><span class="tag">Node.js</span></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header">
+            <div class="project-meta"><span class="project-year">2024</span><span class="project-type">PWA</span></div>
+            <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
+          </div>
+          <h3 class="project-name">guia-flora</h3>
+          <p class="project-desc">Guia de flora nativa com geolocalização, cache offline e sistema de contribuições da comunidade.</p>
+          <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Service Worker</span></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header">
+            <div class="project-meta"><span class="project-year">2023</span><span class="project-type">API</span></div>
+            <a href="#" target="_blank" rel="noopener" class="project-arrow">↗</a>
+          </div>
+          <h3 class="project-name">pdfreed</h3>
+          <p class="project-desc">Microserviço de processamento e extração de dados de PDFs em larga escala. Suporte a OCR e exportação estruturada.</p>
+          <div class="project-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Docker</span></div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-header">
+            <div class="project-meta"><span class="project-year">2023</span><span class="project-type">Full-Stack</span></div>
+            <a href="https://github.com/fredericospetry/fsp" target="_blank" rel="noopener" class="project-arrow">↗</a>
+          </div>
+          <h3 class="project-name">fsp-dev</h3>
+          <p class="project-desc">Este portfolio. Engine estático com blog integrado, painel de admin e deploy automatizado via CI/CD.</p>
+          <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">GitHub Actions</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos" class="section">
+    <div class="container">
+      <p class="section-label">SERVIÇOS</p>
+      <h2 class="section-title">O que eu <span class="accent">entrego</span></h2>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">⟨/⟩</div>
+          <h3 class="service-title">Desenvolvimento Web</h3>
+          <p class="service-desc">Sites e aplicações web completas, do design ao deploy. React, Next.js, APIs REST, bancos de dados. Código limpo, performance real.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⬡</div>
+          <h3 class="service-title">APIs & Back-end</h3>
+          <p class="service-desc">Microserviços, APIs RESTful e integrações. Node.js, Python, PostgreSQL. Arquiteturas que escalam sem dor de cabeça.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">◎</div>
+          <h3 class="service-title">Consultoria Técnica</h3>
+          <p class="service-desc">Revisão de arquitetura, code review, mentoria. Ajudo times a tomar decisões técnicas melhores sem precisar adivinhar.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⟳</div>
+          <h3 class="service-title">Manutenção & Evolução</h3>
+          <p class="service-desc">Refatoração de sistemas legados, adição de features, correção de bugs. Entrego progressivamente sem quebrar o que já funciona.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="section">
+    <div class="container">
+      <p class="section-label">CONTATO</p>
+      <h2 class="section-title">Vamos <span class="accent">conversar</span></h2>
+      <p class="contact-intro">Tem um projeto em mente, uma oportunidade ou só quer trocar uma ideia? Me chama. Respondo sempre.</p>
+
+      <div class="contact-grid">
+        <a href="https://wa.me/5551986053" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon">📱</div>
+          <div class="contact-info"><span class="contact-platform">WhatsApp</span><span class="contact-value">+55 51 9860-5153</span></div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://instagram.com/petryfrederico" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon">📸</div>
+          <div class="contact-info"><span class="contact-platform">Instagram</span><span class="contact-value">@petryfrederico</span></div>
+          <span class="contact-arrow">↗</span>
+        </a>
+        <a href="https://github.com/fredericospetry" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon">⌥</div>
+          <div class="contact-info"><span class="contact-platform">GitHub</span><span class="contact-value">fredericospetry</span></div>
+          <span class="contact-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="footer-left">© 2024 Frederico S. Petry</span>
+      <span class="footer-center">Construído com cuidado. Porto Alegre, RS.</span>
+      <span class="footer-right">FSP.DEV</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
