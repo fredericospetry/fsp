@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FSP.ADS();</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>💻</text></svg>">
@@ -11,157 +12,141 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: #000;
+            font-family: 'Iceland', cursive;
         }
 
         body {
-            background-color: transparent;
+            background-color: #000;
             font-family: 'Iceland', cursive;
-            padding: 15px;
-            margin: 10px;
             min-height: 100vh;
-            padding-bottom: 25px;
-            border: 1px solid #B0B0B033;
-            border-bottom: 1px solid #B0B0B055;
-            position: relative;
-            display: flow-root;
-            max-width: 100vw;
-            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 22px 15px 28px;
         }
 
-        body::before {
+        /* ===== Frame ===== */
+        #frame {
+            position: relative;
+            display: inline-block;
+            width: auto;
+            min-width: min(480px, calc(100vw - 30px));
+            border: 1px solid #B0B0B044;
+            border-bottom: 1px solid #B0B0B066;
+            overflow: visible;
+            padding: 22px 22px 22px 22px;
+        }
+
+        #frame::before {
             content: '// FSP.DEV - TERMINAL';
             position: absolute;
-            top: -12px;
-            left: 20px;
+            top: -10px;
+            left: 16px;
             background: #000;
             color: #00FFFF;
-            padding: 0 10px;
-            font-size: 0.8em;
-        }
-
-body::after {
-    content: 'SINCE 1988 ©';
-    position: absolute;
-    bottom: -12px;
-    right: 20px;
-    background: #000;
-    color: #00FFFF;
-    padding: 2px 10px;
-    font-size: 0.8em;
-    z-index: 999;
-    line-height: 1;
-}
-
-        html {
-            background-color: #000000;
-        }
-
-        .cursor {
-            color: #00FFFF;
-            font-size: 0.8em;
-            vertical-align: middle;
-            animation: piscar 1s infinite;
-        }
-
-        @keyframes piscar {
-            0% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        h1 {
-            color: #00FFFF;
-            text-shadow: 0 0 10px #00FFFF,
-                0 0 20px #00FFFF,
-                0 0 40px #00FFFF;
-            font-size: 1.4em;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        h1,
-        p {
-            position: relative;
-            z-index: 1;
-        }
-
-        .recuo1 {
-            margin-left: 2px;
-        }
-
-        .recuo2 {
-            margin-left: 5px;
-        }
-
-        .recuo3 {
-            margin-left: 10px;
-        }
-
-        .recuo4 {
-            margin-left: 15px;
-        }
-
-        .recuo5 {
-            margin-left: 32px;
-        }
-
-        p {
-            color: #B0B0B0;
-            text-shadow: 0 0 5px #B0B0B0;
-            font-size: 0.9em;
-            min-height: 1.5em;
-            font-weight: 300;
+            padding: 0 8px;
+            font-size: 0.75em;
+            font-family: 'Iceland', cursive;
             letter-spacing: 1px;
+            white-space: nowrap;
         }
 
-        p a {
-            color: #B0B0B0;
-            text-decoration: underline;
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-
-        p a:hover {
+        #frame::after {
+            content: 'SINCE 1988 \00A9';
+            position: absolute;
+            bottom: -10px;
+            right: 16px;
+            background: #000;
             color: #00FFFF;
-            text-shadow: 0 0 10px #00FFFF;
+            padding: 0 8px;
+            font-size: 0.75em;
+            font-family: 'Iceland', cursive;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
 
-        #plexus {
+        /* ===== Canvas wrapper ===== */
+        #bg-wrapper {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            opacity: 0.6;
             overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        /* ============= Menu lateral */
-        #conteudoPrincipal {
-            margin-left: 0;
-        }
-
-        #menuContainer {
-            position: relative;
-            left: 0;
+        #bg-canvas {
+            position: absolute;
             top: 0;
+            left: 0;
+        }
+
+        /* ===== Seletor de efeito — canto superior direito ===== */
+        #fx-switcher {
+            position: absolute;
+            top: 6px;
+            right: 10px;
+            z-index: 10;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        #fx-switcher button {
+            background: transparent;
+            border: none;
+            color: #B0B0B033;
+            font-family: 'Iceland', cursive;
+            font-size: 0.62em;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            padding: 0 2px;
+            line-height: 1;
+            transition: color 0.25s;
+        }
+
+        #fx-switcher button:hover {
+            color: #00FFFF88;
+        }
+
+        #fx-switcher button.fx-on {
+            color: #00FFFF99;
+        }
+
+        /* ===== Layout flex ===== */
+        #layout {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ===== Menu ===== */
+        #menuContainer {
+            width: 100%;
+            flex-shrink: 0;
             z-index: 2;
-            width: auto;
-            margin-bottom: 15px;
+        }
+
+        #menuHeader {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         #menuBtn {
             color: #B0B0B0;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.95em;
             text-shadow: 0 0 5px #B0B0B0;
             transition: color 0.3s, text-shadow 0.3s;
         }
@@ -171,11 +156,24 @@ body::after {
             text-shadow: 0 0 10px #00FFFF;
         }
 
+        #fecharMenu {
+            color: #B0B0B0;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: inline;
+        }
+
+        #fecharMenu:hover {
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF;
+        }
+
         #btnInicio {
             display: none;
             color: #B0B0B0;
             cursor: pointer;
-            padding: 6px 0 12px 0;
+            padding: 6px 0 10px 0;
+            font-size: 0.95em;
             transition: color 0.3s, text-shadow 0.3s;
         }
 
@@ -189,49 +187,29 @@ body::after {
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
             margin-top: 0;
-            padding: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
         }
 
         #menuLateral.aberto {
-            max-height: 350px;
+            max-height: 300px;
             opacity: 1;
-            margin-top: 15px;
-        }
-
-        #fecharMenu {
-            color: #B0B0B0;
-            cursor: pointer;
-            font-size: 0.9em;
-            display: inline;
-            margin-bottom: 0;
-        }
-
-        #fecharMenu:hover {
-            color: #00FFFF;
-            text-shadow: 0 0 10px #00FFFF;
-        }
-
-        #menuHeader {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            margin-top: 10px;
         }
 
         #menuLateral a {
             display: block;
             color: #B0B0B0;
             text-decoration: none;
-            font-size: 1em;
-            padding: 6px 0;
+            font-size: 0.95em;
+            padding: 5px 0;
             transition: color 0.3s, text-shadow 0.3s, padding-left 0.3s;
         }
 
         #menuLateral a:hover {
             color: #00FFFF;
             text-shadow: 0 0 10px #00FFFF;
-            padding-left: 10px;
+            padding-left: 8px;
         }
 
         #menuLateral a.ativo {
@@ -239,7 +217,12 @@ body::after {
             text-shadow: 0 0 5px #00FFFF;
         }
 
-        /* ============= Seções SPA */
+        /* ===== Conteúdo ===== */
+        #conteudoPrincipal {
+            width: 100%;
+            min-width: 0;
+        }
+
         .secao-conteudo {
             display: none;
         }
@@ -248,147 +231,188 @@ body::after {
             display: block;
         }
 
-        /* Tablet: a partir de 768px */
-        @media (min-width: 768px) {
-            body {
-                margin: 40px;
-                padding: 35px;
-                overflow: hidden;
-                max-width: none;
+        /* ===== Tipografia ===== */
+        .cursor {
+            color: #00FFFF;
+            font-size: 0.8em;
+            vertical-align: middle;
+            animation: piscar 1s infinite;
+        }
+
+        @keyframes piscar {
+
+            0%,
+            100% {
+                opacity: 1
             }
 
-            .recuo1 {
-                margin-left: 5px;
-            }
-
-            .recuo2 {
-                margin-left: 20px;
-            }
-
-            .recuo3 {
-                margin-left: 40px;
-            }
-
-            .recuo4 {
-                margin-left: 60px;
-            }
-
-            #conteudoPrincipal {
-                margin-left: 150px;
-            }
-
-            #menuContainer {
-                position: absolute;
-                left: 15px;
-                top: 100px;
-                width: 130px;
-                margin-bottom: 0;
-            }
-
-            h1 {
-                font-size: 2.2em;
-            }
-
-            p {
-                font-size: 1.1em;
+            50% {
+                opacity: 0
             }
         }
 
-        /* Desktop: a partir de 1024px */
-        @media (min-width: 1024px) {
+        h1 {
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 40px #00FFFF;
+            font-size: 1.3em;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: #B0B0B0;
+            text-shadow: 0 0 5px #B0B0B0;
+            font-size: 0.88em;
+            min-height: 1.4em;
+            font-weight: 300;
+            letter-spacing: 1px;
+            line-height: 1.7;
+        }
+
+        p a {
+            color: #B0B0B0;
+            text-decoration: underline;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        p a:hover {
+            color: #00FFFF;
+            text-shadow: 0 0 10px #00FFFF;
+        }
+
+        /* ===== Tablet 600px+ ===== */
+        @media (min-width: 600px) {
             body {
-                margin: 90px;
-                padding: 50px;
-                min-height: 100vh;
-                overflow: hidden;
+                padding: 28px 24px 34px;
             }
 
-            #conteudoPrincipal {
-                margin-left: 180px;
+            #frame {
+                min-width: 520px;
+                padding: 28px 26px;
+            }
+
+            #layout {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 22px;
             }
 
             #menuContainer {
-                position: absolute;
-                left: 20px;
-                top: 130px;
-                width: 150px;
-            }
-
-            #menuLateral.aberto {
-                max-height: 400px;
+                width: 130px;
+                padding-top: 3px;
             }
 
             h1 {
-                font-size: 2.5em;
+                font-size: 1.6em;
             }
 
             p {
-                font-size: 1.2em;
+                font-size: 0.95em;
+            }
+        }
+
+        /* ===== Desktop 1024px+ ===== */
+        @media (min-width: 1024px) {
+            body {
+                padding: 34px 60px 42px;
+            }
+
+            #frame {
+                min-width: 640px;
+                padding: 36px 32px;
+            }
+
+            #menuContainer {
+                width: 155px;
+            }
+
+            h1 {
+                font-size: 1.9em;
+            }
+
+            p {
+                font-size: 1.05em;
             }
         }
     </style>
 </head>
 
 <body>
-    <div id="menuContainer">
-        <div id="menuHeader">
-            <span id="menuBtn">[menu]</span>
-            <span id="fecharMenu">[x]</span>
+    <div id="frame">
+
+        <!-- Canvas de fundo -->
+        <div id="bg-wrapper">
+            <canvas id="bg-canvas"></canvas>
         </div>
-        <nav id="menuLateral">
-            <span id="btnInicio">&lt;Início /&gt;</span>
-            <a href="#sobre" data-secao="sobre">&lt;Sobre /&gt;</a>
-            <a href="#portfolio" data-secao="portfolio">&lt;Portfólio /&gt;</a>
-            <a href="#servicos" data-secao="servicos">&lt;Serviços /&gt;</a>
-            <a href="#contato" data-secao="contato">&lt;Contato /&gt;</a>
-        </nav>
+
+        <!-- Seletor de efeito: discreto, canto superior direito -->
+        <div id="fx-switcher">
+            <button data-fx="scanline" class="fx-on">CRT</button>
+            <button data-fx="grid">GRID</button>
+            <button data-fx="particulas">PRT</button>
+            <button data-fx="ondas">WFM</button>
+        </div>
+
+        <!-- Layout: menu + conteúdo -->
+        <div id="layout">
+            <div id="menuContainer">
+                <div id="menuHeader">
+                    <span id="menuBtn">[menu]</span>
+                    <span id="fecharMenu">[x]</span>
+                </div>
+                <nav id="menuLateral">
+                    <span id="btnInicio">&lt;Início /&gt;</span>
+                    <a href="#sobre" data-secao="sobre">&lt;Sobre /&gt;</a>
+                    <a href="#portfolio" data-secao="portfolio">&lt;Portfólio /&gt;</a>
+                    <a href="#servicos" data-secao="servicos">&lt;Serviços /&gt;</a>
+                    <a href="#contato" data-secao="contato">&lt;Contato /&gt;</a>
+                </nav>
+            </div>
+
+            <div id="conteudoPrincipal">
+                <div id="secao-inicio" class="secao-conteudo ativa">
+                    <h1 id="titulo-inicio"></h1>
+                    <p id="p1-inicio"></p>
+                    <p id="p2-inicio"></p>
+                    <p id="p3-inicio"></p>
+                    <p id="p4-inicio"></p>
+                </div>
+                <div id="secao-sobre" class="secao-conteudo">
+                    <h1 id="titulo-sobre"></h1>
+                    <p id="p1-sobre"></p>
+                    <p id="p2-sobre"></p>
+                    <p id="p3-sobre"></p>
+                    <p id="p4-sobre"></p>
+                </div>
+                <div id="secao-portfolio" class="secao-conteudo">
+                    <h1 id="titulo-portfolio"></h1>
+                    <p id="p1-portfolio"></p>
+                    <p id="p2-portfolio"></p>
+                    <p id="p3-portfolio"></p>
+                    <p id="p4-portfolio"></p>
+                </div>
+                <div id="secao-servicos" class="secao-conteudo">
+                    <h1 id="titulo-servicos"></h1>
+                    <p id="p1-servicos"></p>
+                    <p id="p2-servicos"></p>
+                    <p id="p3-servicos"></p>
+                    <p id="p4-servicos"></p>
+                </div>
+                <div id="secao-contato" class="secao-conteudo">
+                    <h1 id="titulo-contato"></h1>
+                    <p id="p1-contato"></p>
+                    <p id="p2-contato"></p>
+                    <p id="p3-contato"></p>
+                    <p id="p4-contato"></p>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <div id="conteudoPrincipal">
-        <div id="secao-inicio" class="secao-conteudo ativa">
-            <h1 id="titulo-inicio"></h1>
-            <p id="p1-inicio" class="recuo1"></p>
-            <p id="p2-inicio" class="recuo2"></p>
-            <p id="p3-inicio" class="recuo3"></p>
-            <p id="p4-inicio" class="recuo4"></p>
-        </div>
-
-        <div id="secao-sobre" class="secao-conteudo">
-            <h1 id="titulo-sobre"></h1>
-            <p id="p1-sobre" class="recuo1"></p>
-            <p id="p2-sobre" class="recuo2"></p>
-            <p id="p3-sobre" class="recuo3"></p>
-            <p id="p4-sobre" class="recuo4"></p>
-        </div>
-
-        <div id="secao-portfolio" class="secao-conteudo">
-            <h1 id="titulo-portfolio"></h1>
-            <p id="p1-portfolio" class="recuo1"></p>
-            <p id="p2-portfolio" class="recuo2"></p>
-            <p id="p3-portfolio" class="recuo3"></p>
-            <p id="p4-portfolio" class="recuo4"></p>
-        </div>
-
-        <div id="secao-servicos" class="secao-conteudo">
-            <h1 id="titulo-servicos"></h1>
-            <p id="p1-servicos" class="recuo1"></p>
-            <p id="p2-servicos" class="recuo2"></p>
-            <p id="p3-servicos" class="recuo3"></p>
-            <p id="p4-servicos" class="recuo4"></p>
-        </div>
-
-        <div id="secao-contato" class="secao-conteudo">
-            <h1 id="titulo-contato"></h1>
-            <p id="p1-contato" class="recuo1"></p>
-            <p id="p2-contato" class="recuo2"></p>
-            <p id="p3-contato" class="recuo3"></p>
-            <p id="p4-contato" class="recuo4"></p>
-        </div>
-    </div>
-
-    <canvas id="plexus"></canvas>
 
     <script>
+        // ===== CONTEÚDO =====
         const conteudoSecoes = {
             inicio: {
                 titulo: "/* FSP.ADS(); */",
@@ -448,8 +472,8 @@ body::after {
                     elemento.innerHTML = texto + '<span class="cursor">█</span>';
                     if (!manterCursor) {
                         setTimeout(() => {
-                            let cursorSpan = elemento.querySelector('.cursor');
-                            if (cursorSpan) cursorSpan.style.display = 'none';
+                            const c = elemento.querySelector('.cursor');
+                            if (c) c.style.display = 'none';
                             if (callback) callback();
                         }, 500);
                     }
@@ -458,33 +482,27 @@ body::after {
             digitar();
         }
 
-        function digitarSecao(secao, callback) {
+        function digitarSecao(secao) {
             const dados = conteudoSecoes[secao];
             const tituloEl = document.getElementById('titulo-' + secao);
-            const paragrafos = [];
-            for (let i = 1; i <= dados.linhas.length; i++) {
-                paragrafos.push(document.getElementById('p' + i + '-' + secao));
-            }
+            const pars = [];
+            for (let i = 1; i <= dados.linhas.length; i++)
+                pars.push(document.getElementById('p' + i + '-' + secao));
 
             tituloEl.innerHTML = '';
-            paragrafos.forEach(p => p.innerHTML = '');
+            pars.forEach(p => p.innerHTML = '');
 
-            const velLinha = secao === 'portfolio' ? 1 : 20;
+            const vel = secao === 'portfolio' ? 1 : 20;
 
             digitarTexto(tituloEl, dados.titulo, 40, () => {
                 let idx = 0;
-                function proximaLinha() {
+                function prox() {
                     if (idx < dados.linhas.length) {
                         const ultima = idx === dados.linhas.length - 1;
-                        digitarTexto(paragrafos[idx], dados.linhas[idx], velLinha, () => {
-                            idx++;
-                            proximaLinha();
-                        }, ultima);
-                    } else if (callback) {
-                        callback();
+                        digitarTexto(pars[idx], dados.linhas[idx], vel, () => { idx++; prox(); }, ultima);
                     }
                 }
-                proximaLinha();
+                prox();
             }, false);
         }
 
@@ -492,13 +510,7 @@ body::after {
             document.querySelectorAll('.secao-conteudo').forEach(s => s.classList.remove('ativa'));
             document.getElementById('secao-' + secao).classList.add('ativa');
             digitarSecao(secao);
-
-            const btnInicio = document.getElementById('btnInicio');
-            if (secao === 'inicio') {
-                btnInicio.style.display = 'none';
-            } else {
-                btnInicio.style.display = 'block';
-            }
+            document.getElementById('btnInicio').style.display = secao === 'inicio' ? 'none' : 'block';
         }
 
         function iniciar() {
@@ -514,20 +526,17 @@ body::after {
                 menuBtn.style.display = 'none';
                 fecharMenu.style.display = 'inline';
             });
-
             fecharMenu.addEventListener('click', () => {
                 menuLateral.classList.remove('aberto');
                 menuBtn.style.display = 'inline';
                 fecharMenu.style.display = 'none';
             });
-
             btnInicio.addEventListener('click', () => {
                 navegarPara('inicio');
                 document.querySelectorAll('#menuLateral a').forEach(l => l.classList.remove('ativo'));
             });
-
             document.querySelectorAll('#menuLateral a').forEach(link => {
-                link.addEventListener('click', (e) => {
+                link.addEventListener('click', e => {
                     e.preventDefault();
                     const secao = link.getAttribute('data-secao');
                     navegarPara(secao);
@@ -539,72 +548,141 @@ body::after {
             digitarSecao('inicio');
         }
 
-        // ============= PLEXUS =============
-        const canvas = document.getElementById('plexus');
+        // ===== EFEITOS DE FUNDO =====
+        const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
+        const wrapper = document.getElementById('bg-wrapper');
+
+        let efeito = 'scanline';
+        let t = 0;
+        let pontos = [];
 
         function redimensionar() {
-            const body = document.body;
-            canvas.width = body.clientWidth;
-            canvas.height = body.clientHeight;
+            canvas.width = wrapper.offsetWidth;
+            canvas.height = wrapper.offsetHeight;
+            if (efeito === 'particulas') iniciarPontos();
         }
 
-        redimensionar();
+        function iniciarPontos() {
+            pontos = [];
+            for (let i = 0; i < 55; i++) {
+                pontos.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 1.2 + 0.6
+                });
+            }
+        }
 
-        let pontos = [];
-        for (let i = 0; i < 60; i++) {
-            pontos.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5
+        function desenharScanline(W, H) {
+            t += 0.4;
+            for (let y = 0; y < H; y += 4) {
+                ctx.fillStyle = `rgba(0,255,255,${0.025 + 0.015 * Math.sin((y + t) * 0.05)})`;
+                ctx.fillRect(0, y, W, 1);
+            }
+            const sweep = (t * 0.5) % H;
+            const g = ctx.createLinearGradient(0, sweep - 40, 0, sweep + 40);
+            g.addColorStop(0, 'rgba(0,255,255,0)');
+            g.addColorStop(0.5, 'rgba(0,255,255,0.07)');
+            g.addColorStop(1, 'rgba(0,255,255,0)');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, sweep - 40, W, 80);
+        }
+
+        function desenharGrid(W, H) {
+            t += 0.02;
+            const sz = 32;
+            const pulse = 0.035 + 0.025 * Math.sin(t);
+            ctx.strokeStyle = `rgba(0,255,255,${pulse})`;
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x <= W; x += sz) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+            for (let y = 0; y <= H; y += sz) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+            for (let x = sz; x < W; x += sz) {
+                for (let y = sz; y < H; y += sz) {
+                    const a = 0.04 + 0.04 * Math.sin(t + x * 0.05 + y * 0.05);
+                    ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0,255,255,${a})`; ctx.fill();
+                }
+            }
+        }
+
+        function desenharParticulas(W, H) {
+            pontos.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > W) p.vx *= -1;
+                if (p.y < 0 || p.y > H) p.vy *= -1;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0,255,255,0.7)'; ctx.fill();
             });
+            pontos.forEach((a, i) => pontos.slice(i + 1).forEach(b => {
+                const d = Math.hypot(a.x - b.x, a.y - b.y);
+                if (d < 140) {
+                    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = `rgba(0,255,255,${0.4 * (1 - d / 140)})`;
+                    ctx.lineWidth = 0.5; ctx.stroke();
+                }
+            }));
+        }
+
+        function desenharOndas(W, H) {
+            t += 0.025;
+            const waves = [
+                { amp: 16, freq: 0.018, spd: 1.0, a: 0.18 },
+                { amp: 9, freq: 0.030, spd: 1.6, a: 0.12 },
+                { amp: 5, freq: 0.050, spd: 2.2, a: 0.07 },
+            ];
+            waves.forEach(w => {
+                ctx.beginPath();
+                for (let x = 0; x <= W; x += 2) {
+                    const y = H / 2 + w.amp * Math.sin(x * w.freq + t * w.spd);
+                    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = `rgba(0,255,255,${w.a})`;
+                ctx.lineWidth = 1; ctx.stroke();
+            });
+            // onda composta principal
+            ctx.beginPath();
+            for (let x = 0; x <= W; x += 2) {
+                const y = H / 2
+                    + waves[0].amp * Math.sin(x * waves[0].freq + t * waves[0].spd)
+                    + waves[1].amp * Math.sin(x * waves[1].freq + t * waves[1].spd);
+                x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(0,255,255,0.55)';
+            ctx.lineWidth = 1.5; ctx.stroke();
         }
 
         function animar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            pontos.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            });
-
-            pontos.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = '#00FFFF';
-                ctx.fill();
-            });
-
-            pontos.forEach((a, i) => {
-                pontos.slice(i + 1).forEach(b => {
-                    let dist = Math.hypot(a.x - b.x, a.y - b.y);
-                    if (dist < 200) {
-                        ctx.beginPath();
-                        ctx.moveTo(a.x, a.y);
-                        ctx.lineTo(b.x, b.y);
-                        ctx.strokeStyle = `rgba(0, 255, 255, ${0.5 * (1 - dist / 200)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                });
-            });
-
+            const W = canvas.width, H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+            if (efeito === 'scanline') desenharScanline(W, H);
+            else if (efeito === 'grid') desenharGrid(W, H);
+            else if (efeito === 'particulas') desenharParticulas(W, H);
+            else if (efeito === 'ondas') desenharOndas(W, H);
             requestAnimationFrame(animar);
         }
 
-        animar();
-
-        window.addEventListener('resize', () => {
-            redimensionar();
-            pontos.forEach(p => {
-                p.x = Math.random() * canvas.width;
-                p.y = Math.random() * canvas.height;
+        // ===== SWITCHER =====
+        document.querySelectorAll('#fx-switcher button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                efeito = btn.dataset.fx;
+                t = 0;
+                if (efeito === 'particulas' && pontos.length === 0) iniciarPontos();
+                document.querySelectorAll('#fx-switcher button').forEach(b => b.classList.remove('fx-on'));
+                btn.classList.add('fx-on');
             });
         });
 
+        // ===== RESIZE OBSERVER =====
+        new ResizeObserver(() => redimensionar()).observe(document.getElementById('frame'));
+
+        redimensionar();
+        iniciarPontos();
+        animar();
+
+        window.addEventListener('resize', () => { redimensionar(); });
         document.addEventListener('DOMContentLoaded', iniciar);
         document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
